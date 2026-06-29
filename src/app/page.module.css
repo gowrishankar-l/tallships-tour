@@ -1,0 +1,206 @@
+/* ── Page ────────────────────────────────────────────────────────────────── */
+.page { min-height: 100vh; display: flex; flex-direction: column; }
+
+/* ── Header ──────────────────────────────────────────────────────────────── */
+.header {
+  background: var(--accent);
+  color: #fff;
+  padding: 20px 0;
+}
+.headerInner {
+  max-width: 1100px; margin: 0 auto; padding: 0 20px;
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+}
+.brand { display: flex; align-items: center; gap: 14px; }
+.brandIcon { font-size: 40px; line-height: 1; }
+.title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 30px; font-weight: 800; line-height: 1;
+  letter-spacing: 0.02em; color: #fff;
+}
+.subtitle { font-size: 13px; color: rgba(255,255,255,0.7); margin-top: 2px; }
+
+.stats { display: flex; gap: 24px; }
+.stat { display: flex; flex-direction: column; align-items: center; }
+.stat strong { font-size: 22px; font-weight: 700; color: #fff; line-height: 1; }
+.stat span { font-size: 11px; color: rgba(255,255,255,0.6); text-transform: uppercase; letter-spacing: 0.06em; }
+
+/* ── Tabs ────────────────────────────────────────────────────────────────── */
+.tabs { background: #fff; border-bottom: 1px solid var(--border); }
+.tabsInner { max-width: 1100px; margin: 0 auto; padding: 0 20px; display: flex; }
+.tab {
+  padding: 12px 20px; font-size: 14px; font-weight: 600;
+  color: var(--muted); background: none; border: none;
+  border-bottom: 2px solid transparent; transition: all 0.15s;
+}
+.tab:hover { color: var(--text); }
+.tabOn { color: var(--accent) !important; border-bottom-color: var(--accent) !important; }
+
+/* ── Main ────────────────────────────────────────────────────────────────── */
+.main { max-width: 1100px; margin: 0 auto; padding: 24px 20px 60px; flex: 1; width: 100%; }
+
+/* ── Filters ─────────────────────────────────────────────────────────────── */
+.filters {
+  display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+  margin-bottom: 20px; width: 100%;
+}
+.search {
+  padding: 8px 12px; border: 1px solid var(--border2);
+  border-radius: 6px; font-size: 13px; font-family: inherit;
+  background: #fff; width: 240px; outline: none;
+  transition: border-color 0.15s;
+}
+.search:focus { border-color: var(--accent2); }
+.select {
+  padding: 8px 12px; border: 1px solid var(--border2);
+  border-radius: 6px; font-size: 13px; font-family: inherit;
+  background: #fff; outline: none; cursor: pointer;
+}
+.clearBtn {
+  padding: 8px 12px; background: #fff; border: 1px solid var(--border2);
+  border-radius: 6px; font-size: 13px; color: var(--muted);
+  transition: all 0.15s;
+}
+.clearBtn:hover { border-color: var(--accent); color: var(--accent); }
+.resultCount { font-size: 13px; color: var(--muted); font-weight: 500; }
+
+/* ── Table ───────────────────────────────────────────────────────────────── */
+.tableWrap { overflow-x: auto; border-radius: 8px; border: 1px solid var(--border); background: #fff; }
+.table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.th {
+  padding: 10px 14px; text-align: left; background: var(--bg);
+  font-size: 11px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.06em; color: var(--muted);
+  border-bottom: 1px solid var(--border); white-space: nowrap;
+}
+.thRank { padding: 10px 14px; background: var(--bg); border-bottom: 1px solid var(--border); width: 40px; }
+.thNum { text-align: right; }
+.thSort { cursor: pointer; user-select: none; }
+.thSort:hover { color: var(--accent); }
+.sortIcon { margin-left: 4px; opacity: 0.5; font-size: 10px; }
+
+.row {
+  cursor: pointer; transition: background 0.1s;
+  border-bottom: 1px solid var(--border);
+}
+.row:last-child { border-bottom: none; }
+.row:hover { background: #f8faff; }
+
+.rank { padding: 12px 14px; color: var(--dim); font-size: 12px; text-align: center; font-weight: 600; }
+.shipName { font-weight: 600; color: var(--text); padding: 12px 14px 2px; }
+.shipCountry { font-size: 11px; color: var(--muted); padding: 0 14px 12px; }
+.num { padding: 12px 14px; text-align: right; color: var(--text); font-variant-numeric: tabular-nums; }
+.chevron { padding: 12px 14px; color: var(--dim); font-size: 10px; text-align: center; }
+
+.locBadge {
+  display: inline-block; padding: 3px 8px; border-radius: 4px;
+  font-size: 11px; font-weight: 600; border: 1px solid;
+  margin: 10px 14px; white-space: nowrap;
+}
+.tbd { color: var(--dim); font-size: 12px; padding: 10px 14px; display: inline-block; }
+.dates { color: var(--green); font-size: 12px; font-weight: 500; padding: 10px 14px; display: inline-block; }
+
+/* ── Expanded Row ────────────────────────────────────────────────────────── */
+.expandRow { background: #f8faff; }
+.expandContent { padding: 16px 20px; border-top: 1px solid var(--border); }
+.expandGrid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 12px;
+}
+.elabel { display: block; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); margin-bottom: 2px; }
+.eval { display: block; font-size: 13px; font-weight: 500; color: var(--text); }
+
+/* ── Location Cards ──────────────────────────────────────────────────────── */
+.locGrid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 16px; margin-bottom: 32px;
+}
+.locCard { background: #fff; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+.locHeader {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 16px; border-left: 4px solid; background: var(--bg);
+  border-bottom: 1px solid var(--border);
+}
+.locName { font-weight: 700; font-size: 15px; color: var(--text); }
+.locArea { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; margin-top: 2px; }
+.locCount { font-size: 12px; font-weight: 600; color: var(--muted); background: var(--border); padding: 2px 8px; border-radius: 10px; white-space: nowrap; }
+
+.locShips { display: flex; flex-direction: column; }
+.locShipRow {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 10px 16px; border-bottom: 1px solid var(--border);
+  gap: 8px;
+}
+.locShipRow:last-child { border-bottom: none; }
+.locShipName { font-weight: 600; font-size: 13px; }
+.locShipCountry { font-size: 11px; color: var(--muted); }
+.locShipMeta { display: flex; flex-direction: column; align-items: flex-end; gap: 3px; flex-shrink: 0; }
+.locDates { font-size: 11px; color: var(--green); font-weight: 500; }
+.locLen { font-size: 11px; color: var(--dim); }
+
+/* ── TBD Section ─────────────────────────────────────────────────────────── */
+.tbdSection { background: #fff; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+.tbdTitle { padding: 12px 16px; font-size: 14px; font-weight: 600; color: var(--muted); border-bottom: 1px solid var(--border); background: var(--bg); }
+.tbdList { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); }
+.tbdRow { display: flex; flex-direction: column; padding: 10px 16px; border-bottom: 1px solid var(--border); }
+.tbdName { font-weight: 500; font-size: 13px; }
+.tbdCountry { font-size: 11px; color: var(--muted); }
+
+/* ── Footer ──────────────────────────────────────────────────────────────── */
+.footer { padding: 20px; text-align: center; font-size: 12px; color: var(--dim); border-top: 1px solid var(--border); background: #fff; }
+.footer code { background: var(--bg); padding: 1px 5px; border-radius: 3px; font-size: 11px; }
+
+/* ── Responsive ──────────────────────────────────────────────────────────── */
+@media (max-width: 640px) {
+  .stats { gap: 16px; }
+  .title { font-size: 22px; }
+  .locGrid { grid-template-columns: 1fr; }
+  .search { width: 100%; }
+  .filters { flex-direction: column; align-items: stretch; }
+  .resultCount { margin-left: 0; }
+}
+
+/* ── Date Chips ──────────────────────────────────────────────────────────── */
+.dateChips { display: flex; flex-wrap: wrap; gap: 4px; }
+.dateChip {
+  display: inline-block; padding: 2px 7px;
+  background: #eff6ff; color: #1d4ed8;
+  border: 1px solid #bfdbfe; border-radius: 4px;
+  font-size: 11px; font-weight: 600; white-space: nowrap;
+}
+
+/* ── Location card dates row ─────────────────────────────────────────────── */
+.locDatesRow {
+  display: flex; align-items: center; gap: 6px; flex-wrap: wrap;
+  padding: 8px 16px; background: #f8faff; border-bottom: 1px solid var(--border);
+}
+.locDatesLabel { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); }
+
+/* ── Neighborhood / Pier in table ────────────────────────────────────────── */
+.neighborhood { font-weight: 600; font-size: 12px; padding: 10px 14px 2px; }
+.pier { font-size: 11px; color: var(--muted); padding: 0 14px 10px; }
+
+/* ── By Date view ────────────────────────────────────────────────────────── */
+.dateGrid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 16px;
+}
+.dateCard { background: #fff; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+.dateCardHeader {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 12px 16px; background: var(--accent); color: #fff;
+}
+.dateCardDate { font-family: 'Barlow Condensed', sans-serif; font-size: 20px; font-weight: 800; letter-spacing: 0.04em; }
+.dateCardCount { font-size: 12px; background: rgba(255,255,255,0.2); padding: 2px 8px; border-radius: 10px; }
+
+.datePierGroup { padding: 10px 16px 6px; border-bottom: 1px solid var(--border); }
+.datePierGroup:last-child { border-bottom: none; }
+.datePierName { font-size: 12px; font-weight: 700; color: var(--text); margin-bottom: 6px; }
+.datePierNeighborhood { font-weight: 400; color: var(--muted); }
+.dateShipRow { display: flex; align-items: baseline; justify-content: space-between; padding: 3px 0; }
+.dateShipName { font-size: 13px; font-weight: 500; }
+.dateShipCountry { font-size: 11px; color: var(--muted); }
+
+/* ── Result Count ────────────────────────────────────────────────────────── */
+.resultCount { font-size: 13px; color: var(--muted); font-weight: 500; display: flex; align-items: baseline; gap: 5px; }
+.resultNum { font-size: 28px; font-weight: 800; color: var(--accent); line-height: 1; }
