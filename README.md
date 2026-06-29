@@ -27,3 +27,4 @@ All fleet data lives in `src/lib/ships.ts`. Edit the `SHIPS` array to update dat
 - React 18
 - TypeScript
 - CSS Modules
+
