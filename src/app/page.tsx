@@ -324,7 +324,7 @@ export default function Page() {
       </main>
 
       <footer className={styles.footer}>
-        <p>Data: Tall Ships America · To update dates/locations edit <code>src/lib/ships.ts</code></p>
+        <p>Data: <a href="https://sail4th.org" target="_blank" rel="noopener noreferrer">sail4th.org</a> · Built by Gowrishankar Lakshminarayanan</p>
       </footer>
     </div>
   )
