@@ -1,8 +1,52 @@
 'use client'
 
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useRef, useEffect } from 'react'
 import { SHIPS, LOCATIONS, ALL_DATES, Ship } from '@/lib/ships'
 import styles from './page.module.css'
+
+function Dropdown({ value, onChange, options, placeholder }: {
+  value: string
+  onChange: (v: string) => void
+  options: { label: string; value: string }[]
+  placeholder: string
+}) {
+  const [open, setOpen] = useState(false)
+  const ref = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    function handler(e: MouseEvent) {
+      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false)
+    }
+    document.addEventListener('mousedown', handler)
+    return () => document.removeEventListener('mousedown', handler)
+  }, [])
+
+  const selected = options.find(o => o.value === value)
+
+  return (
+    <div className={styles.dropdown} ref={ref}>
+      <button className={styles.dropdownTrigger} onClick={() => setOpen(o => !o)}>
+        <span>{selected ? selected.label : placeholder}</span>
+        <span className={styles.dropdownChevron}>{open ? '▲' : '▼'}</span>
+      </button>
+      {open && (
+        <div className={styles.dropdownMenu}>
+          <div
+            className={`${styles.dropdownItem} ${value === '' ? styles.dropdownItemOn : ''}`}
+            onClick={() => { onChange(''); setOpen(false) }}
+          >{placeholder}</div>
+          {options.map(o => (
+            <div
+              key={o.value}
+              className={`${styles.dropdownItem} ${value === o.value ? styles.dropdownItemOn : ''}`}
+              onClick={() => { onChange(o.value); setOpen(false) }}
+            >{o.label}</div>
+          ))}
+        </div>
+      )}
+    </div>
+  )
+}
 
 function fmtNum(n: number | null) {
   if (n == null) return '—'
@@ -306,14 +350,18 @@ export default function Page() {
           <>
             <div className={styles.filters}>
               <input className={styles.search} placeholder="🔍  Search ship or country…" value={search} onChange={e=>setSearch(e.target.value)} />
-              <select className={styles.select} value={filterLoc} onChange={e=>setFilterLoc(e.target.value)}>
-                <option value="">All locations</option>
-                {LOCATIONS.map(l => <option key={l} value={l}>{l}</option>)}
-              </select>
-              <select className={styles.select} value={filterDate} onChange={e=>setFilterDate(e.target.value)}>
-                <option value="">All dates</option>
-                {ALL_DATES.map(d => <option key={d} value={d}>{d}</option>)}
-              </select>
+              <Dropdown
+                value={filterLoc}
+                onChange={setFilterLoc}
+                placeholder="All locations"
+                options={LOCATIONS.map(l => ({ label: l, value: l }))}
+              />
+              <Dropdown
+                value={filterDate}
+                onChange={setFilterDate}
+                placeholder="All dates"
+                options={ALL_DATES.map(d => ({ label: d, value: d }))}
+              />
               {hasFilter && <button className={styles.clearBtn} onClick={()=>{setFilterLoc('');setFilterDate('');setSearch('')}}>Clear filters</button>}
               <span className={styles.resultCount}>
                 <span className={styles.resultNum}>{filtered.length}</span>

@@ -94,6 +94,27 @@
   border-radius: 6px; font-size: 13px; font-family: inherit;
   background: #fff; outline: none; cursor: pointer;
 }
+.dropdown { position: relative; width: 180px; }
+.dropdownTrigger {
+  display: flex; align-items: center; justify-content: space-between; gap: 8px;
+  padding: 8px 12px; border: 1px solid var(--border2); border-radius: 6px;
+  font-size: 13px; font-family: inherit; background: #fff; color: var(--text);
+  cursor: pointer; width: 180px; transition: border-color 0.15s;
+}
+.dropdownTrigger:hover { border-color: var(--accent); }
+.dropdownChevron { font-size: 9px; color: var(--muted); flex-shrink: 0; }
+.dropdownMenu {
+  position: absolute; top: calc(100% + 4px); left: 0; z-index: 100;
+  background: #fff; border: 1px solid var(--border2); border-radius: 6px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.1); width: 100%; overflow: hidden;
+}
+.dropdownItem {
+  padding: 9px 14px; font-size: 13px; cursor: pointer; color: var(--text);
+  transition: background 0.1s;
+}
+.dropdownItem:hover { background: #f0f4ff; }
+.dropdownItemOn { background: #eff6ff; color: var(--accent); font-weight: 600; }
+
 .clearBtn {
   padding: 8px 12px; background: #fff; border: 1px solid var(--border2);
   border-radius: 6px; font-size: 13px; color: var(--muted);
@@ -125,7 +146,7 @@
 .row:hover { background: #f8faff; }
 
 .rank { padding: 12px 14px; color: var(--dim); font-size: 12px; text-align: center; font-weight: 600; }
-.shipName { font-weight: 600; color: var(--text); padding: 12px 14px 2px; }
+.shipName { font-weight: 600; color: var(--text); padding: 12px 14px 2px; white-space: nowrap; }
 .shipCountry { font-size: 11px; color: var(--muted); padding: 0 14px 12px; }
 .num { padding: 12px 14px; text-align: right; color: var(--text); font-variant-numeric: tabular-nums; }
 .chevron { padding: 12px 14px; color: var(--dim); font-size: 10px; text-align: center; }
@@ -190,8 +211,10 @@
 
 /* ── Responsive ──────────────────────────────────────────────────────────── */
 @media (max-width: 640px) {
-  .stats { gap: 16px; }
   .title { font-size: 22px; }
+  .headerInner { align-items: flex-start; }
+  .credits { align-items: flex-end; }
+  .creditsName { font-size: 11px; text-align: right; }
   .locGrid { grid-template-columns: 1fr; }
   .search { width: 100%; }
   .filters { flex-direction: column; align-items: stretch; }
@@ -199,7 +222,7 @@
 }
 
 /* ── Flags ───────────────────────────────────────────────────────────────── */
-.flag { width: 2.2em; height: 1.65em; border-radius: 2px; vertical-align: middle; margin-right: 6px; box-shadow: 0 0 0 1px rgba(0,0,0,0.1); }
+.flag { width: 1.6em; height: 1.2em; border-radius: 2px; vertical-align: middle; margin-right: 5px; box-shadow: 0 0 0 1px rgba(0,0,0,0.1); }
 
 /* ── Date Chips ──────────────────────────────────────────────────────────── */
 .dateChips { display: flex; flex-wrap: wrap; gap: 4px; }
