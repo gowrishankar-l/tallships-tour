@@ -199,16 +199,68 @@ export default function Page() {
             <div>
               <h1 className={styles.title}>Tall Ships 2026</h1>
               <p className={styles.subtitle}>Fleet Directory &amp; Dock Guide — New York City</p>
+              <p className={styles.eventDates}>July 5 – July 7, 2026</p>
             </div>
           </div>
-          <div className={styles.stats}>
-            <div className={styles.stat}><strong>{SHIPS.length}</strong><span>Ships</span></div>
-            <div className={styles.stat}><strong>{SHIPS.filter(s=>s.pier).length}</strong><span>Docked</span></div>
-            <div className={styles.stat}><strong>{ALL_DATES.length}</strong><span>Days</span></div>
-            <div className={styles.stat}><strong>{[...new Set(SHIPS.map(s=>s.country))].length}</strong><span>Nations</span></div>
+          <div className={styles.credits}>
+            <span className={styles.creditsName}>Gowrishankar Lakshminarayanan</span>
+            <a href="https://sail4th.org" target="_blank" rel="noopener noreferrer" className={styles.creditsSource}>Data: sail4th.org</a>
+            <span className={styles.creditsSource}>Last updated Jun 30, 2026</span>
           </div>
         </div>
       </header>
+
+      <div className={styles.statsBanner}>
+        <div className={styles.statsBannerInner}>
+          <div className={styles.statItem}>
+            {/* Tall ship / sail */}
+            <svg className={styles.statIcon} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+              <line x1="12" y1="2" x2="12" y2="20"/>
+              <path d="M12 4 C12 4 5 8 5 14 L12 14 Z"/>
+              <path d="M12 6 C12 6 18 9 18 14 L12 14 Z"/>
+              <path d="M4 20 Q12 18 20 20"/>
+            </svg>
+            <span className={styles.statNum}>{SHIPS.length}</span>
+            <span className={styles.statLabel}>Ships</span>
+          </div>
+          <div className={styles.statItem}>
+            {/* Anchor */}
+            <svg className={styles.statIcon} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+              <circle cx="12" cy="5" r="2"/>
+              <line x1="12" y1="7" x2="12" y2="20"/>
+              <path d="M6 11 L12 7 L18 11"/>
+              <path d="M6 20 C6 20 6 17 12 17 C18 17 18 20 18 20"/>
+            </svg>
+            <span className={styles.statNum}>{SHIPS.filter(s=>s.pier).length}</span>
+            <span className={styles.statLabel}>Docked</span>
+          </div>
+          <div className={styles.statItem}>
+            {/* Compass / sun */}
+            <svg className={styles.statIcon} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+              <circle cx="12" cy="12" r="4"/>
+              <line x1="12" y1="2" x2="12" y2="5"/>
+              <line x1="12" y1="19" x2="12" y2="22"/>
+              <line x1="2" y1="12" x2="5" y2="12"/>
+              <line x1="19" y1="12" x2="22" y2="12"/>
+              <line x1="4.93" y1="4.93" x2="7.05" y2="7.05"/>
+              <line x1="16.95" y1="16.95" x2="19.07" y2="19.07"/>
+              <line x1="4.93" y1="19.07" x2="7.05" y2="16.95"/>
+              <line x1="16.95" y1="7.05" x2="19.07" y2="4.93"/>
+            </svg>
+            <span className={styles.statNum}>{ALL_DATES.length}</span>
+            <span className={styles.statLabel}>Days</span>
+          </div>
+          <div className={styles.statItem}>
+            {/* Flag / pennant */}
+            <svg className={styles.statIcon} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+              <line x1="5" y1="3" x2="5" y2="21"/>
+              <path d="M5 4 L19 9 L5 14 Z"/>
+            </svg>
+            <span className={styles.statNum}>{[...new Set(SHIPS.map(s=>s.country))].length}</span>
+            <span className={styles.statLabel}>Nations</span>
+          </div>
+        </div>
+      </div>
 
       <div className={styles.tabs}>
         <div className={styles.tabsInner}>
@@ -250,7 +302,7 @@ export default function Page() {
                     <th className={`${styles.th} ${styles.thNum}`}>Capacity</th>
                     <th className={styles.th}>Location</th>
                     <th className={styles.th}>On Display</th>
-                    <th></th>
+                    <th className={styles.th}></th>
                   </tr>
                 </thead>
                 <tbody>
@@ -323,9 +375,9 @@ export default function Page() {
 
       </main>
 
-      <footer className={styles.footer}>
-        <p>Data: <a href="https://sail4th.org" target="_blank" rel="noopener noreferrer">sail4th.org</a> · Built by Gowrishankar Lakshminarayanan</p>
-      </footer>
+      {/* <footer className={styles.footer}>
+        <p>Tall Ships America 2026 — New York City</p>
+      </footer> */}
     </div>
   )
 }

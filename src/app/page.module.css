@@ -19,25 +19,63 @@
   letter-spacing: 0.02em; color: #fff;
 }
 .subtitle { font-size: 13px; color: rgba(255,255,255,0.7); margin-top: 2px; }
+.eventDates { font-size: 12px; color: rgba(255,255,255,0.55); margin-top: 4px; letter-spacing: 0.04em; }
 
 .stats { display: flex; gap: 24px; }
 .stat { display: flex; flex-direction: column; align-items: center; }
 .stat strong { font-size: 22px; font-weight: 700; color: #fff; line-height: 1; }
 .stat span { font-size: 11px; color: rgba(255,255,255,0.6); text-transform: uppercase; letter-spacing: 0.06em; }
 
-/* ── Tabs ────────────────────────────────────────────────────────────────── */
-.tabs { background: #fff; border-bottom: 1px solid var(--border); }
-.tabsInner { max-width: 1100px; margin: 0 auto; padding: 0 20px; display: flex; }
-.tab {
-  padding: 12px 20px; font-size: 14px; font-weight: 600;
-  color: var(--muted); background: none; border: none;
-  border-bottom: 2px solid transparent; transition: all 0.15s;
+.credits { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; }
+.creditsName { font-size: 13px; font-weight: 600; color: #fff; }
+.creditsSource { font-size: 11px; color: rgba(255,255,255,0.6); text-decoration: none; }
+.creditsSource:hover { color: rgba(255,255,255,0.9); text-decoration: underline; }
+
+/* ── Stats Banner ────────────────────────────────────────────────────────── */
+.statsBanner { background: #f0f4ff; border-bottom: 1px solid var(--border); }
+.statsBannerInner {
+  max-width: 1100px; margin: 0 auto; padding: 16px 20px;
+  display: flex; gap: 0;
 }
-.tab:hover { color: var(--text); }
-.tabOn { color: var(--accent) !important; border-bottom-color: var(--accent) !important; }
+.statItem {
+  flex: 1; display: flex; flex-direction: column; align-items: center;
+  padding: 12px 0; position: relative;
+}
+.statItem + .statItem::before {
+  content: ''; position: absolute; left: 0; top: 20%; bottom: 20%;
+  width: 1px; background: var(--border);
+}
+.statIcon {
+  width: 28px; height: 28px; color: var(--accent); margin-bottom: 6px; opacity: 0.75;
+}
+.statNum {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 36px; font-weight: 800; color: var(--accent); line-height: 1;
+}
+.statLabel {
+  font-size: 11px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.08em; color: var(--muted); margin-top: 4px;
+}
+
+/* ── Tabs ────────────────────────────────────────────────────────────────── */
+.tabs { background: #e8edf8; border-bottom: 2px solid var(--accent); padding-top: 12px; }
+.tabsInner { max-width: 1100px; margin: 0 auto; padding: 0 20px; display: flex; gap: 4px; }
+.tab {
+  padding: 10px 24px; font-size: 14px; font-weight: 600;
+  color: var(--muted); background: #d0d8ee; border: none;
+  border-radius: 6px 6px 0 0;
+  border: 1px solid transparent; border-bottom: none;
+  transition: all 0.15s; cursor: pointer;
+}
+.tab:hover { background: #c4cde6; color: var(--text); }
+.tabOn {
+  color: var(--accent) !important; background: #fff !important;
+  border-color: var(--border) !important; border-bottom-color: #fff !important;
+  position: relative; bottom: -2px; padding-bottom: 12px;
+}
 
 /* ── Main ────────────────────────────────────────────────────────────────── */
-.main { max-width: 1100px; margin: 0 auto; padding: 24px 20px 60px; flex: 1; width: 100%; }
+.main { max-width: 1100px; margin: 0 auto; padding: 24px 20px 20px; flex: 1; width: 100%; }
 
 /* ── Filters ─────────────────────────────────────────────────────────────── */
 .filters {
