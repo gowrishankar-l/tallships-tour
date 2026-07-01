@@ -22,6 +22,35 @@ const AREA_COLORS: Record<string, string> = {
   'Staten Island':   '#b45309',
 }
 
+const COUNTRY_ISO: Record<string, string> = {
+  'Argentina':             'ar',
+  'British Virgin Islands':'vg',
+  'Chile':                 'cl',
+  'Colombia':              'co',
+  'Dominican Republic':    'do',
+  'Ecuador':               'ec',
+  'France':                'fr',
+  'Germany':               'de',
+  'India':                 'in',
+  'Italy':                 'it',
+  'Monaco':                'mc',
+  'Netherlands':           'nl',
+  'Peru':                  'pe',
+  'Poland':                'pl',
+  'Portugal':              'pt',
+  'Romania':               'ro',
+  'Spain':                 'es',
+  'Sweden':                'se',
+  'United States':         'us',
+  'Uruguay':               'uy',
+}
+
+function Flag({ country }: { country: string }) {
+  const iso = COUNTRY_ISO[country]
+  if (!iso) return null
+  return <span className={`fi fi-${iso} ${styles.flag}`} title={country} />
+}
+
 function DateChip({ date }: { date: string }) {
   return <span className={styles.dateChip}>{date}</span>
 }
@@ -36,7 +65,7 @@ function ShipRow({ ship, rank }: { ship: Ship; rank: number }) {
       <tr className={styles.row} onClick={() => setExpanded(e => !e)}>
         <td className={styles.rank}>{rank}</td>
         <td>
-          <div className={styles.shipName}>{ship.name}</div>
+          <div className={styles.shipName}><Flag country={ship.country} /> {ship.name}</div>
           <div className={styles.shipCountry}>{ship.country}</div>
         </td>
         <td className={styles.num}>{fmtNum(ship.sqftSail)}</td>
@@ -62,7 +91,7 @@ function ShipRow({ ship, rank }: { ship: Ship; rank: number }) {
           <td colSpan={8}>
             <div className={styles.expandContent}>
               <div className={styles.expandGrid}>
-                <div><span className={styles.elabel}>Country</span><span className={styles.eval}>{ship.country}</span></div>
+                <div><span className={styles.elabel}>Country</span><span className={styles.eval}><Flag country={ship.country} /> {ship.country}</span></div>
                 <div><span className={styles.elabel}>Sail Area</span><span className={styles.eval}>{fmtNum(ship.sqftSail)} sq ft</span></div>
                 <div><span className={styles.elabel}>Length</span><span className={styles.eval}>{fmtNum(ship.lengthFt)} ft</span></div>
                 <div><span className={styles.elabel}>Capacity</span><span className={styles.eval}>{ship.capacity ?? '—'}</span></div>
@@ -108,7 +137,7 @@ function LocationCard({ neighborhood, pier, ships }: { neighborhood: string; pie
           <div key={s.name} className={styles.locShipRow}>
             <div>
               <div className={styles.locShipName}>{s.name}</div>
-              <div className={styles.locShipCountry}>{s.country}</div>
+              <div className={styles.locShipCountry}><Flag country={s.country} /> {s.country}</div>
             </div>
             {s.dates.length > 0 && (
               <div className={styles.dateChips}>

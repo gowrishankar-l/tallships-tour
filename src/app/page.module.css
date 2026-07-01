@@ -59,11 +59,11 @@
 
 /* ── Tabs ────────────────────────────────────────────────────────────────── */
 .tabs { background: #e8edf8; border-bottom: 2px solid var(--accent); padding-top: 12px; }
-.tabsInner { max-width: 1100px; margin: 0 auto; padding: 0 20px; display: flex; gap: 4px; }
+.tabsInner { max-width: 1100px; margin: 0 auto; padding: 0 20px; display: flex; gap: 4px; align-items: flex-end; }
 .tab {
   padding: 10px 24px; font-size: 14px; font-weight: 600;
-  color: var(--muted); background: #d0d8ee; border: none;
-  border-radius: 6px 6px 0 0;
+  color: var(--muted); background: #d0d8ee;
+  border-radius: 0;
   border: 1px solid transparent; border-bottom: none;
   transition: all 0.15s; cursor: pointer;
 }
@@ -197,6 +197,9 @@
   .filters { flex-direction: column; align-items: stretch; }
   .resultCount { margin-left: 0; }
 }
+
+/* ── Flags ───────────────────────────────────────────────────────────────── */
+.flag { width: 2.2em; height: 1.65em; border-radius: 2px; vertical-align: middle; margin-right: 6px; box-shadow: 0 0 0 1px rgba(0,0,0,0.1); }
 
 /* ── Date Chips ──────────────────────────────────────────────────────────── */
 .dateChips { display: flex; flex-wrap: wrap; gap: 4px; }
