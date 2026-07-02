@@ -485,7 +485,12 @@ export default function Page() {
                     acc[key].push(s)
                     return acc
                   }, {})
-                ).map(([pier, pierShips]) => (
+                ).sort(([, a], [, b]) => {
+                  const HOOD_ORDER: Record<string, number> = { 'Manhattan': 0, 'Staten Island': 1, 'Brooklyn': 2 }
+                  const ha = HOOD_ORDER[a[0].neighborhood ?? ''] ?? 3
+                  const hb = HOOD_ORDER[b[0].neighborhood ?? ''] ?? 3
+                  return ha !== hb ? ha - hb : b.length - a.length
+                }).map(([pier, pierShips]) => (
                   <div key={pier} className={styles.datePierGroup}>
                     <div className={styles.datePierName}>
                       <Pin />{pier}

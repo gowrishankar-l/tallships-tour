@@ -44,7 +44,7 @@ function ResetZoomControl() {
     <button
       onClick={() => map.setView(DEFAULT_CENTER, DEFAULT_ZOOM)}
       style={{
-        position: 'absolute', top: 10, left: '50%', transform: 'translateX(-50%)', zIndex: 1000,
+        position: 'absolute', bottom: 32, left: '50%', transform: 'translateX(-50%)', zIndex: 1000,
         background: '#fff', border: '2px solid rgba(0,0,0,0.2)',
         borderRadius: 6, padding: '8px 20px', fontSize: 14, fontWeight: 700,
         cursor: 'pointer', fontFamily: 'Barlow, sans-serif', color: '#333',
@@ -90,11 +90,12 @@ export default function MapView({ ships }: Props) {
               key={location}
               center={coords}
               radius={radius}
-              pathOptions={{ fillColor: color, fillOpacity: 0.85, color: '#fff', weight: 2 }}
+              pathOptions={{ fillColor: color, fillOpacity: 0.85, color: color, weight: 0 }}
+              bubblingMouseEvents={false}
             >
               {/* Hover tooltip — ship list with flags */}
-              <Tooltip direction="right" offset={[10, 0]} opacity={1} sticky className={styles.mapHoverTip}>
-                <div style={{ fontFamily: 'Barlow, sans-serif', minWidth: 180 }}>
+              <Tooltip direction="top" offset={[0, -radius]} opacity={1} sticky className={styles.mapHoverTip}>
+                <div style={{ fontFamily: 'Barlow, sans-serif', minWidth: 180, maxWidth: 240 }}>
                   <div style={{ fontWeight: 800, fontSize: 13, marginBottom: 6, borderBottom: `2px solid ${color}`, paddingBottom: 6, display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', gap: 12 }}>
                     <span>{pierName} · {city}</span>
                     <span style={{ fontSize: 11, fontWeight: 600, color: '#64748b', whiteSpace: 'nowrap' }}>{pierShips.length} ship{pierShips.length !== 1 ? 's' : ''}</span>

@@ -242,8 +242,11 @@
 @media (max-width: 640px) {
   .title { font-size: 22px; }
   .headerInner { align-items: flex-start; }
-  .barLabel { width: auto; flex-shrink: 0; }
-  .barShipName { max-width: 120px; }
+  .barRow { flex-wrap: wrap; }
+  .barLabel { width: 100% !important; }
+  .barRank { display: none; }
+  .barShipName { max-width: 220px !important; }
+  .barTrack { width: 100%; flex: none; }
   .barValue { display: none; }
   .analyticsSection { padding: 16px; }
   .credits { align-items: flex-end; }
@@ -280,7 +283,7 @@
 /* ── By Date view ────────────────────────────────────────────────────────── */
 .dateGrid {
   display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 16px;
+  gap: 24px 28px;
 }
 .dateCard { background: #fff; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
 .dateCardHeader {
