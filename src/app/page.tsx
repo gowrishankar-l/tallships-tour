@@ -186,11 +186,14 @@ function LocationCard({ neighborhood, pier, ships }: { neighborhood: string; pie
               <div className={styles.locShipName}>{s.name}</div>
               <div className={styles.locShipCountry}><Flag country={s.country} /> {s.country}</div>
             </div>
-            {s.dates.length > 0 && (
-              <div className={styles.dateChips}>
-                {s.dates.map(d => <DateChip key={d} date={d} />)}
-              </div>
-            )}
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 4 }}>
+              {s.sqftSail != null && <span className={styles.dateShipSail}>{fmtNum(s.sqftSail)} sq ft</span>}
+              {s.dates.length > 0 && (
+                <div className={styles.dateChips}>
+                  {s.dates.map(d => <DateChip key={d} date={d} />)}
+                </div>
+              )}
+            </div>
           </div>
         ))}
       </div>
@@ -480,8 +483,11 @@ export default function Page() {
                     </div>
                     {pierShips.map(s => (
                       <div key={s.name} className={styles.dateShipRow}>
-                        <span className={styles.dateShipName}><Flag country={s.country} />{s.name}</span>
-                        <span className={styles.dateShipCountry}>{s.country}</span>
+                        <div>
+                          <div className={styles.dateShipName}><Flag country={s.country} />{s.name}</div>
+                          <div className={styles.dateShipCountry}>{s.country}</div>
+                        </div>
+                        {s.sqftSail != null && <span className={styles.dateShipSail}>{fmtNum(s.sqftSail)} sq ft</span>}
                       </div>
                     ))}
                   </div>
@@ -632,10 +638,14 @@ export default function Page() {
                 {grouped.map(([date]) => {
                   const short = date.replace(', 2026', '')
                   return (
-                    <a key={date} href={`#${toId(date)}`} className={styles.scheduleNavItem}>
+                    <button
+                      key={date}
+                      className={styles.scheduleNavItem}
+                      onClick={() => document.getElementById(toId(date))?.scrollIntoView({ behavior: 'smooth' })}
+                    >
                       {short}
                       {date.includes('July 4') && <span className={styles.scheduleNavDot} />}
-                    </a>
+                    </button>
                   )
                 })}
               </div>
