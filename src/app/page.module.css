@@ -1,6 +1,16 @@
 /* ── Page ────────────────────────────────────────────────────────────────── */
 .page { min-height: 100vh; display: flex; flex-direction: column; }
 
+/* ── Scroll to Top ───────────────────────────────────────────────────────── */
+.scrollTop {
+  position: fixed; bottom: 28px; right: 28px; z-index: 200;
+  padding: 10px 16px; background: var(--accent); color: #fff;
+  font-size: 13px; font-weight: 700; font-family: inherit;
+  border: none; border-radius: 4px; cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2); transition: background 0.15s, opacity 0.15s;
+}
+.scrollTop:hover { background: var(--accent2); }
+
 /* ── Header ──────────────────────────────────────────────────────────────── */
 .header {
   background: var(--accent);
@@ -280,15 +290,23 @@
 .dateShipCountry { font-size: 11px; color: var(--muted); }
 
 /* ── Analytics ───────────────────────────────────────────────────────────── */
-.analyticsWrap { display: flex; flex-direction: column; gap: 40px; }
+.analyticsWrap { display: flex; flex-direction: column; gap: 0; }
+.analyticsTabs { display: flex; gap: 4px; border-bottom: 2px solid var(--border); margin-bottom: 24px; }
+.analyticsTab {
+  padding: 9px 20px; font-size: 13px; font-weight: 600; color: var(--muted);
+  background: transparent; border: none; border-bottom: 2px solid transparent;
+  cursor: pointer; margin-bottom: -2px; transition: all 0.15s; white-space: nowrap;
+}
+.analyticsTab:hover { color: var(--accent); }
+.analyticsTabOn { color: var(--accent) !important; border-bottom-color: var(--accent) !important; }
 .analyticsSection { background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 24px; }
 .analyticsTitle { font-family: 'Barlow Condensed', sans-serif; font-size: 22px; font-weight: 800; color: var(--text); margin-bottom: 4px; }
 .analyticsSub { font-size: 13px; color: var(--muted); margin-bottom: 20px; }
 .barChart { display: flex; flex-direction: column; gap: 10px; }
 .barRow { display: flex; align-items: center; gap: 10px; }
 .barRank { font-size: 11px; font-weight: 700; color: var(--dim); width: 20px; text-align: right; flex-shrink: 0; }
-.barLabel { display: flex; align-items: center; gap: 6px; width: 220px; flex-shrink: 0; }
-.barShipName { font-size: 13px; font-weight: 600; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 160px; }
+.barLabel { display: flex; align-items: center; gap: 6px; width: 300px; flex-shrink: 0; }
+.barShipName { font-size: 13px; font-weight: 600; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 240px; }
 .barNation { font-size: 11px; font-weight: 400; color: var(--muted); }
 .barTrack { flex: 1; background: var(--bg); border-radius: 4px; height: 26px; overflow: hidden; }
 .barFill { height: 100%; background: var(--accent); border-radius: 4px; transition: width 0.4s ease; display: flex; align-items: center; justify-content: flex-end; padding-right: 6px; min-width: 40px; }
@@ -296,11 +314,44 @@
 .barInlineValue { font-size: 9px; font-weight: 700; color: #fff; white-space: nowrap; }
 .barValue { display: none; }
 
+/* ── Live Tracker ────────────────────────────────────────────────────────── */
+.trackerBanner {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  text-align: center; padding: 60px 20px;
+  background: #fff; border: 1px solid var(--border); border-radius: 8px; gap: 16px;
+}
+.trackerIcon { font-size: 48px; }
+.trackerTitle { font-family: 'Barlow Condensed', sans-serif; font-size: 28px; font-weight: 800; color: var(--text); }
+.trackerDesc { font-size: 15px; color: var(--muted); max-width: 400px; line-height: 1.6; }
+.trackerBtn {
+  display: inline-block; padding: 12px 28px;
+  background: var(--accent); color: #fff;
+  font-size: 15px; font-weight: 700; border-radius: 6px;
+  text-decoration: none; transition: background 0.15s;
+}
+.trackerBtn:hover { background: var(--accent2); }
+
 /* ── Map ─────────────────────────────────────────────────────────────────── */
 .mapWrap { height: 800px; border-radius: 8px; overflow: hidden; border: 1px solid var(--border); }
 .mapLoading { height: 600px; display: flex; align-items: center; justify-content: center; color: var(--muted); font-size: 14px; }
 
 /* ── Schedule ────────────────────────────────────────────────────────────── */
+.scheduleNav {
+  display: flex; gap: 0; margin-bottom: 24px;
+  border-bottom: 2px solid var(--border); overflow-x: auto; scrollbar-width: none;
+}
+.scheduleNav::-webkit-scrollbar { display: none; }
+.scheduleNavItem {
+  display: flex; align-items: center; gap: 5px;
+  padding: 10px 18px; font-size: 13px; font-weight: 600;
+  color: var(--muted); text-decoration: none; white-space: nowrap;
+  border-bottom: 2px solid transparent; margin-bottom: -2px;
+  transition: color 0.15s, border-color 0.15s;
+}
+.scheduleNavItem:hover { color: #fff; background: var(--accent); border-bottom-color: var(--accent); }
+.scheduleNavDot {
+  width: 6px; height: 6px; border-radius: 50%; background: #dc2626; flex-shrink: 0;
+}
 .scheduleList { display: flex; flex-direction: column; gap: 32px; }
 .scheduleDay {}
 .paradeTag {

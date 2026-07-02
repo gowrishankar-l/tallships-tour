@@ -200,7 +200,7 @@ function LocationCard({ neighborhood, pier, ships }: { neighborhood: string; pie
 
 type SortKey = 'sqftSail' | 'lengthFt' | 'name' | 'country'
 type SortDir = 'asc' | 'desc'
-type View = 'ships' | 'locations' | 'bydate' | 'schedule' | 'map' | 'analytics'
+type View = 'ships' | 'locations' | 'bydate' | 'schedule' | 'map' | 'analytics' | 'tracker' | 'tickets'
 
 export default function Page() {
   const [view, setView] = useState<View>('ships')
@@ -210,6 +210,14 @@ export default function Page() {
   const [sortDir, setSortDir] = useState<SortDir>('desc')
   const [search, setSearch] = useState('')
   const [filterNeighborhood, setFilterNeighborhood] = useState('')
+  const [analyticsTab, setAnalyticsTab] = useState<'sail' | 'nation'>('sail')
+  const [showScrollTop, setShowScrollTop] = useState(false)
+
+  useEffect(() => {
+    function onScroll() { setShowScrollTop(window.scrollY > 300) }
+    window.addEventListener('scroll', onScroll)
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
 
   function handleSort(key: SortKey) {
     if (sortKey === key) setSortDir(d => d === 'asc' ? 'desc' : 'asc')
@@ -347,6 +355,8 @@ export default function Page() {
           <button className={`${styles.tab} ${view==='schedule'?styles.tabOn:''}`} onClick={()=>setView('schedule')}>🗓 Schedule</button>
           <button className={`${styles.tab} ${view==='map'?styles.tabOn:''}`} onClick={()=>setView('map')}>🗺 Map</button>
           <button className={`${styles.tab} ${view==='analytics'?styles.tabOn:''}`} onClick={()=>setView('analytics')}>📊 Analytics</button>
+          <button className={`${styles.tab} ${view==='tracker'?styles.tabOn:''}`} onClick={()=>setView('tracker')}>🛰 Live Tracker</button>
+          <button className={`${styles.tab} ${view==='tickets'?styles.tabOn:''}`} onClick={()=>setView('tickets')}>🎟 Tickets</button>
         </div>
       </div>
 
@@ -478,6 +488,40 @@ export default function Page() {
           </>
         )}
 
+        {/* ── Live Tracker ── */}
+        {view === 'tracker' && (
+          <div className={styles.trackerBanner}>
+            <div className={styles.trackerIcon}>🛰</div>
+            <h2 className={styles.trackerTitle}>Live Ship Tracker</h2>
+            <p className={styles.trackerDesc}>Track all tall ships in real-time on an interactive map powered by GlobalTerraMaps.</p>
+            <a
+              href="https://www.globalterramaps.com/viewer/?event=250"
+              target="_blank"
+              rel="noopener noreferrer"
+              className={styles.trackerBtn}
+            >
+              Open Live Tracker ↗
+            </a>
+          </div>
+        )}
+
+        {/* ── Tickets ── */}
+        {view === 'tickets' && (
+          <div className={styles.trackerBanner}>
+            <div className={styles.trackerIcon}>🎟</div>
+            <h2 className={styles.trackerTitle}>Public Viewing Tickets</h2>
+            <p className={styles.trackerDesc}>Free public viewing of tall ships at Brooklyn Bridge Park, Sail City (The Intrepid &amp; Manhattan Cruise Terminal), South Street Seaport, and Staten Island Waterfront Park — July 5–7, 2026, 12–6 PM.</p>
+            <a
+              href="https://tickettree.us/events/sail-250"
+              target="_blank"
+              rel="noopener noreferrer"
+              className={styles.trackerBtn}
+            >
+              Get Free Tickets ↗
+            </a>
+          </div>
+        )}
+
         {/* ── Analytics ── */}
         {view === 'analytics' && (() => {
           const shipsWithSail = SHIPS.filter(s => s.sqftSail != null).sort((a, b) => (b.sqftSail ?? 0) - (a.sqftSail ?? 0))
@@ -493,55 +537,67 @@ export default function Page() {
 
           return (
             <div className={styles.analyticsWrap}>
-
-              <div className={styles.analyticsSection}>
-                <h2 className={styles.analyticsTitle}>Sail Area Leaderboard</h2>
-                <p className={styles.analyticsSub}>Ships ranked by total sail area (sq ft)</p>
-                <div className={styles.barChart}>
-                  {shipsWithSail.map((s, i) => (
-                    <div key={s.name} className={styles.barRow}>
-                      <div className={styles.barRank}>{i + 1}</div>
-                      <div className={styles.barLabel}>
-                        <Flag country={s.country} />
-                        <span className={styles.barShipName}>{s.name} <span className={styles.barNation}>({s.country})</span></span>
-                      </div>
-                      <div className={styles.barTrack}>
-                        <div
-                          className={styles.barFill}
-                          style={{ width: `${((s.sqftSail ?? 0) / maxSail) * 100}%` }}
-                        >
-                          <span className={styles.barInlineValue}>{fmtNum(s.sqftSail)}</span>
-                        </div>
-                      </div>
-                      <div className={styles.barValue}>{fmtNum(s.sqftSail)}</div>
-                    </div>
-                  ))}
-                </div>
+              <div className={styles.analyticsTabs}>
+                <button
+                  className={`${styles.analyticsTab} ${analyticsTab === 'sail' ? styles.analyticsTabOn : ''}`}
+                  onClick={() => setAnalyticsTab('sail')}
+                >Sail Area</button>
+                <button
+                  className={`${styles.analyticsTab} ${analyticsTab === 'nation' ? styles.analyticsTabOn : ''}`}
+                  onClick={() => setAnalyticsTab('nation')}
+                >Fleet by Nation</button>
               </div>
 
-              <div className={styles.analyticsSection}>
-                <h2 className={styles.analyticsTitle}>Fleet by Nation</h2>
-                <p className={styles.analyticsSub}>Number of ships per country</p>
-                <div className={styles.barChart}>
-                  {nations.map(n => (
-                    <div key={n.country} className={styles.barRow}>
-                      <div className={styles.barLabel}>
-                        <Flag country={n.country} />
-                        <span className={styles.barShipName}>{n.country}</span>
-                      </div>
-                      <div className={styles.barTrack}>
-                        <div
-                          className={styles.barFillGreen}
-                          style={{ width: `${(n.count / maxCount) * 100}%` }}
-                        >
-                          <span className={styles.barInlineValue}>{n.count} ship{n.count !== 1 ? 's' : ''}</span>
+              {analyticsTab === 'sail' && (
+                <div className={styles.analyticsSection}>
+                  <p className={styles.analyticsSub}>Ships ranked by total sail area (sq ft)</p>
+                  <div className={styles.barChart}>
+                    {shipsWithSail.map((s, i) => (
+                      <div key={s.name} className={styles.barRow}>
+                        <div className={styles.barRank}>{i + 1}</div>
+                        <div className={styles.barLabel}>
+                          <Flag country={s.country} />
+                          <span className={styles.barShipName}>{s.name} <span className={styles.barNation}>({s.country})</span></span>
                         </div>
+                        <div className={styles.barTrack}>
+                          <div
+                            className={styles.barFill}
+                            style={{ width: `${((s.sqftSail ?? 0) / maxSail) * 100}%` }}
+                          >
+                            <span className={styles.barInlineValue}>{fmtNum(s.sqftSail)}</span>
+                          </div>
+                        </div>
+                        <div className={styles.barValue}>{fmtNum(s.sqftSail)}</div>
                       </div>
-                      <div className={styles.barValue}>{n.count} ship{n.count !== 1 ? 's' : ''}</div>
-                    </div>
-                  ))}
+                    ))}
+                  </div>
                 </div>
-              </div>
+              )}
+
+              {analyticsTab === 'nation' && (
+                <div className={styles.analyticsSection}>
+                  <p className={styles.analyticsSub}>Number of ships per country</p>
+                  <div className={styles.barChart}>
+                    {nations.map(n => (
+                      <div key={n.country} className={styles.barRow}>
+                        <div className={styles.barLabel}>
+                          <Flag country={n.country} />
+                          <span className={styles.barShipName}>{n.country}</span>
+                        </div>
+                        <div className={styles.barTrack}>
+                          <div
+                            className={styles.barFillGreen}
+                            style={{ width: `${(n.count / maxCount) * 100}%` }}
+                          >
+                            <span className={styles.barInlineValue}>{n.count}</span>
+                          </div>
+                        </div>
+                        <div className={styles.barValue}>{n.count} ship{n.count !== 1 ? 's' : ''}</div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
 
             </div>
           )
@@ -555,46 +611,69 @@ export default function Page() {
         )}
 
         {/* ── Schedule ── */}
-        {view === 'schedule' && (
-          <div className={styles.scheduleList}>
-            {Object.entries(
-              EVENTS.reduce<Record<string, typeof EVENTS>>((acc, e) => {
-                const [year, month, day] = e.date.split('-').map(Number)
-                const d = new Date(year, month - 1, day).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })
-                if (!acc[d]) acc[d] = []
-                acc[d].push(e)
-                return acc
-              }, {})
-            ).map(([date, events]) => (
-              <div key={date} className={styles.scheduleDay}>
-                <div className={styles.scheduleDayHeader}>
-                  {date}
-                  {date.includes('July 4') && <span className={styles.paradeTag}>MAIN PARADE DAY</span>}
-                  {date.includes('July 8') && <span className={styles.notPublicTag}>Not open to public</span>}
-                </div>
-                {events.map((e, i) => (
-                  <div key={i} className={styles.scheduleCard}>
-                    <div className={styles.scheduleCardTop}>
-                      <div className={styles.scheduleEvent}>{e.event}</div>
-                      <div className={styles.scheduleMeta}>
-                        <span className={styles.scheduleTime}>{e.time}</span>
-                        {e.location && <span className={styles.scheduleLocation}>📍 {e.location}</span>}
-                      </div>
+        {view === 'schedule' && (() => {
+          const grouped = Object.entries(
+            EVENTS.reduce<Record<string, typeof EVENTS>>((acc, e) => {
+              const [year, month, day] = e.date.split('-').map(Number)
+              const d = new Date(year, month - 1, day).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })
+              if (!acc[d]) acc[d] = []
+              acc[d].push(e)
+              return acc
+            }, {})
+          )
+          const toId = (date: string) => date.replace(/[^a-z0-9]/gi, '-').toLowerCase()
+          return (
+            <>
+              <div className={styles.scheduleNav}>
+                {grouped.map(([date]) => {
+                  const short = date.replace(', 2026', '')
+                  return (
+                    <a key={date} href={`#${toId(date)}`} className={styles.scheduleNavItem}>
+                      {short}
+                      {date.includes('July 4') && <span className={styles.scheduleNavDot} />}
+                    </a>
+                  )
+                })}
+              </div>
+              <div className={styles.scheduleList}>
+                {grouped.map(([date, events]) => (
+                  <div key={date} id={toId(date)} className={styles.scheduleDay}>
+                    <div className={styles.scheduleDayHeader}>
+                      {date}
+                      {date.includes('July 4') && <span className={styles.paradeTag}>MAIN PARADE DAY</span>}
+                      {date.includes('July 8') && <span className={styles.notPublicTag}>Not open to public</span>}
                     </div>
-                    <p className={styles.scheduleDesc}>{e.description}</p>
-                    {e.photography_tip && (
-                      <div className={styles.schedulePhotoTip}>
-                        <span className={styles.schedulePhotoIcon}>📷</span> {e.photography_tip}
+                    {events.map((e, i) => (
+                      <div key={i} className={styles.scheduleCard}>
+                        <div className={styles.scheduleCardTop}>
+                          <div className={styles.scheduleEvent}>{e.event}</div>
+                          <div className={styles.scheduleMeta}>
+                            <span className={styles.scheduleTime}>{e.time}</span>
+                            {e.location && <span className={styles.scheduleLocation}>📍 {e.location}</span>}
+                          </div>
+                        </div>
+                        <p className={styles.scheduleDesc}>{e.description}</p>
+                        {e.photography_tip && (
+                          <div className={styles.schedulePhotoTip}>
+                            <span className={styles.schedulePhotoIcon}>📷</span> {e.photography_tip}
+                          </div>
+                        )}
                       </div>
-                    )}
+                    ))}
                   </div>
                 ))}
               </div>
-            ))}
-          </div>
-        )}
+            </>
+          )
+        })()}
 
       </main>
+
+      {showScrollTop && (
+        <button className={styles.scrollTop} onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+          ↑ Top
+        </button>
+      )}
 
       {/* <footer className={styles.footer}>
         <p>Tall Ships America 2026 — New York City</p>
