@@ -199,9 +199,9 @@
 
 /* ── Location Cards ──────────────────────────────────────────────────────── */
 .locGrid {
-  display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-  gap: 16px; margin-bottom: 32px;
+  columns: 3 320px; column-gap: 28px; margin-bottom: 32px;
 }
+.locGrid > * { break-inside: avoid; margin-bottom: 16px; }
 .locCard { background: #fff; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
 .locHeader {
   display: flex; align-items: center; justify-content: space-between;
@@ -248,7 +248,7 @@
   .analyticsSection { padding: 16px; }
   .credits { align-items: flex-end; }
   .creditsName { font-size: 11px; text-align: right; }
-  .locGrid { grid-template-columns: 1fr; }
+  .locGrid { columns: 1; }
   .search { width: 100%; }
   .filters { flex-direction: column; align-items: stretch; }
   .resultCount { margin-left: 0; }
@@ -345,8 +345,15 @@
 .trackerBtn:hover { background: var(--accent2); }
 
 /* ── Map ─────────────────────────────────────────────────────────────────── */
+.mapHeading { margin-bottom: 16px; }
+.mapTitle { font-family: 'Barlow Condensed', sans-serif; font-size: 22px; font-weight: 800; color: var(--text); margin-bottom: 4px; }
+.mapSub { font-size: 13px; color: var(--muted); }
 .mapWrap { height: 800px; border-radius: 8px; overflow: hidden; border: 1px solid var(--border); }
 .mapLoading { height: 600px; display: flex; align-items: center; justify-content: center; color: var(--muted); font-size: 14px; }
+:global(.mapHoverTip) { background: #fff !important; border: 1px solid #e2e8f0 !important; border-radius: 8px !important; box-shadow: 0 4px 16px rgba(0,0,0,0.12) !important; padding: 10px 14px !important; }
+:global(.mapHoverTip::before) { display: none !important; }
+:global(.mapLabelTip) { background: rgba(255,255,255,0.92) !important; border: none !important; box-shadow: 0 1px 4px rgba(0,0,0,0.15) !important; border-radius: 4px !important; padding: 3px 6px !important; }
+:global(.mapLabelTip::before) { display: none !important; }
 
 /* ── Schedule ────────────────────────────────────────────────────────────── */
 .scheduleNav {

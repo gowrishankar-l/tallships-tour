@@ -264,7 +264,9 @@ export default function Page() {
       if (!map[key]) map[key] = { neighborhood: s.neighborhood!, pier: s.pier!, ships: [] }
       map[key].ships.push(s)
     })
-    return Object.values(map).sort((a, b) => a.neighborhood.localeCompare(b.neighborhood))
+    return Object.values(map).sort((a, b) =>
+      a.neighborhood.localeCompare(b.neighborhood) || b.ships.length - a.ships.length
+    )
   }, [])
 
   // Group by date for date view
@@ -301,7 +303,7 @@ export default function Page() {
           <div className={styles.credits}>
             <span className={styles.creditsName}>Gowrishankar Lakshminarayanan</span>
             <a href="https://sail4th.org" target="_blank" rel="noopener noreferrer" className={styles.creditsSource}>Data: sail4th.org</a>
-            <span className={styles.creditsSource}>Last updated Jul 1, 2026</span>
+            <span className={styles.creditsSource}>Last updated Jul 2, 2026</span>
           </div>
         </div>
       </header>
@@ -623,9 +625,15 @@ export default function Page() {
 
         {/* ── Map ── */}
         {view === 'map' && (
-          <Suspense fallback={<div className={styles.mapLoading}>Loading map…</div>}>
-            <MapView key="map" ships={SHIPS} />
-          </Suspense>
+          <>
+            <div className={styles.mapHeading}>
+              <h2 className={styles.mapTitle}>Major Docking Locations</h2>
+              <p className={styles.mapSub}>{SHIPS.filter(s => s.location).length} of {SHIPS.length} ships docked across {[...new Set(SHIPS.filter(s=>s.location).map(s=>s.location!.split(':')[0]))].length} areas — hover a bubble to see the fleet</p>
+            </div>
+            <Suspense fallback={<div className={styles.mapLoading}>Loading map…</div>}>
+              <MapView key="map" ships={SHIPS} />
+            </Suspense>
+          </>
         )}
 
         {/* ── Schedule ── */}
