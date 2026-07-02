@@ -200,7 +200,7 @@ function LocationCard({ neighborhood, pier, ships }: { neighborhood: string; pie
 
 type SortKey = 'sqftSail' | 'lengthFt' | 'name' | 'country'
 type SortDir = 'asc' | 'desc'
-type View = 'ships' | 'locations' | 'bydate' | 'schedule' | 'map'
+type View = 'ships' | 'locations' | 'bydate' | 'schedule' | 'map' | 'analytics'
 
 export default function Page() {
   const [view, setView] = useState<View>('ships')
@@ -209,6 +209,7 @@ export default function Page() {
   const [sortKey, setSortKey] = useState<SortKey>('sqftSail')
   const [sortDir, setSortDir] = useState<SortDir>('desc')
   const [search, setSearch] = useState('')
+  const [filterNeighborhood, setFilterNeighborhood] = useState('')
 
   function handleSort(key: SortKey) {
     if (sortKey === key) setSortDir(d => d === 'asc' ? 'desc' : 'asc')
@@ -345,6 +346,7 @@ export default function Page() {
           <button className={`${styles.tab} ${view==='bydate'?styles.tabOn:''}`} onClick={()=>setView('bydate')}>🗓 By Date</button>
           <button className={`${styles.tab} ${view==='schedule'?styles.tabOn:''}`} onClick={()=>setView('schedule')}>🗓 Schedule</button>
           <button className={`${styles.tab} ${view==='map'?styles.tabOn:''}`} onClick={()=>setView('map')}>🗺 Map</button>
+          <button className={`${styles.tab} ${view==='analytics'?styles.tabOn:''}`} onClick={()=>setView('analytics')}>📊 Analytics</button>
         </div>
       </div>
 
@@ -398,8 +400,18 @@ export default function Page() {
         {/* ── By Location ── */}
         {view === 'locations' && (
           <>
+            <div className={styles.filters} style={{ marginBottom: 20 }}>
+              <Dropdown
+                value={filterNeighborhood}
+                onChange={setFilterNeighborhood}
+                placeholder="All areas"
+                options={['Manhattan', 'Brooklyn', 'Staten Island'].map(n => ({ label: n, value: n }))}
+              />
+            </div>
             <div className={styles.locGrid}>
-              {byLocation.map(({ neighborhood, pier, ships }) => (
+              {byLocation
+                .filter(({ neighborhood }) => !filterNeighborhood || neighborhood === filterNeighborhood)
+                .map(({ neighborhood, pier, ships }) => (
                 <LocationCard key={pier} neighborhood={neighborhood} pier={pier} ships={ships} />
               ))}
             </div>
@@ -421,16 +433,26 @@ export default function Page() {
 
         {/* ── By Date ── */}
         {view === 'bydate' && (
+          <>
+          <div className={styles.filters} style={{ marginBottom: 20 }}>
+            <Dropdown
+              value={filterNeighborhood}
+              onChange={setFilterNeighborhood}
+              placeholder="All areas"
+              options={['Manhattan', 'Brooklyn', 'Staten Island'].map(n => ({ label: n, value: n }))}
+            />
+          </div>
           <div className={styles.dateGrid}>
-            {byDate.map(([date, ships]) => (
-              <div key={date} className={styles.dateCard}>
+            {byDate.map(([date, ships]) => {
+              const filteredShips = filterNeighborhood ? ships.filter(s => s.neighborhood === filterNeighborhood) : ships
+              if (filteredShips.length === 0) return null
+              return (<div key={date} className={styles.dateCard}>
                 <div className={styles.dateCardHeader}>
                   <span className={styles.dateCardDate}>{date}</span>
-                  <span className={styles.dateCardCount}>{ships.length} ships</span>
+                  <span className={styles.dateCardCount}>{filteredShips.length} ships</span>
                 </div>
-                {/* Group by location within date */}
                 {Object.entries(
-                  ships.reduce<Record<string, Ship[]>>((acc, s) => {
+                  filteredShips.reduce<Record<string, Ship[]>>((acc, s) => {
                     const key = s.pier ?? 'TBD'
                     if (!acc[key]) acc[key] = []
                     acc[key].push(s)
@@ -450,10 +472,80 @@ export default function Page() {
                     ))}
                   </div>
                 ))}
-              </div>
-            ))}
+              </div>)
+            })}
           </div>
+          </>
         )}
+
+        {/* ── Analytics ── */}
+        {view === 'analytics' && (() => {
+          const shipsWithSail = SHIPS.filter(s => s.sqftSail != null).sort((a, b) => (b.sqftSail ?? 0) - (a.sqftSail ?? 0))
+          const maxSail = shipsWithSail[0]?.sqftSail ?? 1
+
+          const nationMap: Record<string, { count: number; country: string }> = {}
+          SHIPS.forEach(s => {
+            if (!nationMap[s.country]) nationMap[s.country] = { count: 0, country: s.country }
+            nationMap[s.country].count++
+          })
+          const nations = Object.values(nationMap).sort((a, b) => b.count - a.count)
+          const maxCount = nations[0]?.count ?? 1
+
+          return (
+            <div className={styles.analyticsWrap}>
+
+              <div className={styles.analyticsSection}>
+                <h2 className={styles.analyticsTitle}>Sail Area Leaderboard</h2>
+                <p className={styles.analyticsSub}>Ships ranked by total sail area (sq ft)</p>
+                <div className={styles.barChart}>
+                  {shipsWithSail.map((s, i) => (
+                    <div key={s.name} className={styles.barRow}>
+                      <div className={styles.barRank}>{i + 1}</div>
+                      <div className={styles.barLabel}>
+                        <Flag country={s.country} />
+                        <span className={styles.barShipName}>{s.name} <span className={styles.barNation}>({s.country})</span></span>
+                      </div>
+                      <div className={styles.barTrack}>
+                        <div
+                          className={styles.barFill}
+                          style={{ width: `${((s.sqftSail ?? 0) / maxSail) * 100}%` }}
+                        >
+                          <span className={styles.barInlineValue}>{fmtNum(s.sqftSail)}</span>
+                        </div>
+                      </div>
+                      <div className={styles.barValue}>{fmtNum(s.sqftSail)}</div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div className={styles.analyticsSection}>
+                <h2 className={styles.analyticsTitle}>Fleet by Nation</h2>
+                <p className={styles.analyticsSub}>Number of ships per country</p>
+                <div className={styles.barChart}>
+                  {nations.map(n => (
+                    <div key={n.country} className={styles.barRow}>
+                      <div className={styles.barLabel}>
+                        <Flag country={n.country} />
+                        <span className={styles.barShipName}>{n.country}</span>
+                      </div>
+                      <div className={styles.barTrack}>
+                        <div
+                          className={styles.barFillGreen}
+                          style={{ width: `${(n.count / maxCount) * 100}%` }}
+                        >
+                          <span className={styles.barInlineValue}>{n.count} ship{n.count !== 1 ? 's' : ''}</span>
+                        </div>
+                      </div>
+                      <div className={styles.barValue}>{n.count} ship{n.count !== 1 ? 's' : ''}</div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+            </div>
+          )
+        })()}
 
         {/* ── Map ── */}
         {view === 'map' && (
