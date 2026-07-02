@@ -1,6 +1,11 @@
 'use client'
 
 import { useState, useMemo, useRef, useEffect, Suspense } from 'react'
+import { MapPin, Ship as ShipIcon, CalendarDays, CalendarRange, Map, BarChart2, Satellite, Ticket } from 'lucide-react'
+
+function Pin() {
+  return <MapPin size={12} color="#dc2626" fill="#dc2626" style={{ display: 'inline-block', verticalAlign: 'middle', marginRight: 3, flexShrink: 0 }} />
+}
 import dynamic from 'next/dynamic'
 const MapView = dynamic(() => import('./MapView'), { ssr: false })
 import { SHIPS, LOCATIONS, ALL_DATES, Ship } from '@/lib/ships'
@@ -122,7 +127,7 @@ function ShipRow({ ship, rank }: { ship: Ship; rank: number }) {
           {ship.neighborhood && ship.pier ? (
             <div>
               <div className={styles.neighborhood} style={{ color: color ?? '#64748b' }}>{ship.neighborhood}</div>
-              <div className={styles.pier}>{ship.pier}</div>
+              <div className={styles.pier}><Pin />{ship.pier}</div>
             </div>
           ) : <span className={styles.tbd}>TBD</span>}
         </td>
@@ -167,9 +172,12 @@ function LocationCard({ neighborhood, pier, ships }: { neighborhood: string; pie
   return (
     <div className={styles.locCard}>
       <div className={styles.locHeader} style={{ borderLeftColor: color }}>
-        <div>
-          <div className={styles.locName}>{pier}</div>
-          <div className={styles.locArea} style={{ color }}>{neighborhood}</div>
+        <div className={styles.locNameRow}>
+          <MapPin size={16} color="#dc2626" fill="#dc2626" style={{ flexShrink: 0, marginTop: 2 }} strokeWidth={1.5} />
+          <div>
+            <div className={styles.locName}>{pier}</div>
+            <div className={styles.locArea} style={{ color }}>{neighborhood}</div>
+          </div>
         </div>
         <span className={styles.locCount}>{ships.length} ship{ships.length !== 1 ? 's' : ''}</span>
       </div>
@@ -356,14 +364,14 @@ export default function Page() {
 
       <div className={styles.tabs}>
         <div className={styles.tabsInner}>
-          <button className={`${styles.tab} ${view==='ships'?styles.tabOn:''}`} onClick={()=>setView('ships')}>🚢 All Ships</button>
-          <button className={`${styles.tab} ${view==='locations'?styles.tabOn:''}`} onClick={()=>setView('locations')}>📍 By Location</button>
-          <button className={`${styles.tab} ${view==='bydate'?styles.tabOn:''}`} onClick={()=>setView('bydate')}>🗓 By Date</button>
-          <button className={`${styles.tab} ${view==='schedule'?styles.tabOn:''}`} onClick={()=>setView('schedule')}>🗓 Schedule</button>
-          <button className={`${styles.tab} ${view==='map'?styles.tabOn:''}`} onClick={()=>setView('map')}>🗺 Map</button>
-          <button className={`${styles.tab} ${view==='analytics'?styles.tabOn:''}`} onClick={()=>setView('analytics')}>📊 Analytics</button>
-          <button className={`${styles.tab} ${view==='tracker'?styles.tabOn:''}`} onClick={()=>setView('tracker')}>🛰 Live Tracker</button>
-          <button className={`${styles.tab} ${view==='tickets'?styles.tabOn:''}`} onClick={()=>setView('tickets')}>🎟 Tickets</button>
+          <button className={`${styles.tab} ${view==='ships'?styles.tabOn:''}`} onClick={()=>setView('ships')}><ShipIcon size={13} style={{verticalAlign:'middle',marginRight:5}}/>All Ships</button>
+          <button className={`${styles.tab} ${view==='locations'?styles.tabOn:''}`} onClick={()=>setView('locations')}><MapPin size={13} style={{verticalAlign:'middle',marginRight:5}}/>By Location</button>
+          <button className={`${styles.tab} ${view==='bydate'?styles.tabOn:''}`} onClick={()=>setView('bydate')}><CalendarDays size={13} style={{verticalAlign:'middle',marginRight:5}}/>By Date</button>
+          <button className={`${styles.tab} ${view==='schedule'?styles.tabOn:''}`} onClick={()=>setView('schedule')}><CalendarRange size={13} style={{verticalAlign:'middle',marginRight:5}}/>Schedule</button>
+          <button className={`${styles.tab} ${view==='map'?styles.tabOn:''}`} onClick={()=>setView('map')}><Map size={13} style={{verticalAlign:'middle',marginRight:5}}/>Map</button>
+          <button className={`${styles.tab} ${view==='analytics'?styles.tabOn:''}`} onClick={()=>setView('analytics')}><BarChart2 size={13} style={{verticalAlign:'middle',marginRight:5}}/>Analytics</button>
+          <button className={`${styles.tab} ${view==='tracker'?styles.tabOn:''}`} onClick={()=>setView('tracker')}><Satellite size={13} style={{verticalAlign:'middle',marginRight:5}}/>Live Tracker</button>
+          <button className={`${styles.tab} ${view==='tickets'?styles.tabOn:''}`} onClick={()=>setView('tickets')}><Ticket size={13} style={{verticalAlign:'middle',marginRight:5}}/>Tickets</button>
         </div>
       </div>
 
@@ -478,7 +486,7 @@ export default function Page() {
                 ).map(([pier, pierShips]) => (
                   <div key={pier} className={styles.datePierGroup}>
                     <div className={styles.datePierName}>
-                      <span style={{ color: AREA_COLORS[pierShips[0].neighborhood ?? ''] ?? '#64748b' }}>●</span> {pier}
+                      <Pin />{pier}
                       {pierShips[0].neighborhood && <span className={styles.datePierNeighborhood}> · {pierShips[0].neighborhood}</span>}
                     </div>
                     {pierShips.map(s => (
@@ -663,7 +671,7 @@ export default function Page() {
                           <div className={styles.scheduleEvent}>{e.event}</div>
                           <div className={styles.scheduleMeta}>
                             <span className={styles.scheduleTime}>{e.time}</span>
-                            {e.location && <span className={styles.scheduleLocation}>📍 {e.location}</span>}
+                            {e.location && <span className={styles.scheduleLocation}><Pin />{e.location}</span>}
                           </div>
                         </div>
                         <p className={styles.scheduleDesc}>{e.description}</p>

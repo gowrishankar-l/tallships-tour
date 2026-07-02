@@ -78,7 +78,7 @@
 }
 
 /* ── Tabs ────────────────────────────────────────────────────────────────── */
-.tabs { background: #e8edf8; border-bottom: 2px solid var(--accent); padding-top: 12px; }
+.tabs { background: #e8edf8; border-bottom: 2px solid var(--accent); padding-top: 0; }
 .tabsInner { max-width: 1100px; margin: 0 auto; padding: 0 20px; display: flex; gap: 4px; align-items: flex-end; overflow-x: auto; scrollbar-width: none; }
 .tabsInner::-webkit-scrollbar { display: none; }
 .tab {
@@ -205,9 +205,10 @@
 .locCard { background: #fff; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
 .locHeader {
   display: flex; align-items: center; justify-content: space-between;
-  padding: 14px 16px; border-left: 4px solid; background: var(--bg);
+  padding: 14px 16px; border-left: 6px solid; background: #e4ecf7;
   border-bottom: 1px solid var(--border);
 }
+.locNameRow { display: flex; align-items: flex-start; gap: 8px; }
 .locName { font-weight: 700; font-size: 15px; color: var(--text); }
 .locArea { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; margin-top: 2px; }
 .locCount { font-size: 12px; font-weight: 600; color: var(--muted); background: var(--border); padding: 2px 8px; border-radius: 10px; white-space: nowrap; }
@@ -284,10 +285,11 @@
 .dateCard { background: #fff; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
 .dateCardHeader {
   display: flex; align-items: center; justify-content: space-between;
-  padding: 12px 16px; background: var(--accent); color: #fff;
+  padding: 12px 16px; background: #e4ecf7; color: var(--text);
+  border-left: 6px solid var(--accent);
 }
-.dateCardDate { font-family: 'Barlow Condensed', sans-serif; font-size: 20px; font-weight: 800; letter-spacing: 0.04em; }
-.dateCardCount { font-size: 12px; background: rgba(255,255,255,0.2); padding: 2px 8px; border-radius: 10px; }
+.dateCardDate { font-family: 'Barlow Condensed', sans-serif; font-size: 20px; font-weight: 800; letter-spacing: 0.04em; color: var(--accent); }
+.dateCardCount { font-size: 12px; font-weight: 700; background: var(--border); color: var(--muted); padding: 2px 8px; border-radius: 10px; }
 
 .datePierGroup { padding: 12px 16px 8px; border-bottom: 1px solid var(--border); border-top: 2px solid var(--border2); }
 .datePierGroup:first-child { border-top: none; }
@@ -328,7 +330,7 @@
 /* ── Live Tracker ────────────────────────────────────────────────────────── */
 .trackerBanner {
   display: flex; flex-direction: column; align-items: center; justify-content: center;
-  text-align: center; padding: 60px 20px;
+  text-align: center; padding: 40px 20px;
   background: #fff; border: 1px solid var(--border); border-radius: 8px; gap: 16px;
 }
 .trackerIcon { font-size: 48px; }
