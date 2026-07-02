@@ -345,6 +345,10 @@ export default function Page() {
             <span className={styles.statLabel}>Nations</span>
           </div>
         </div>
+        <div className={styles.whyGoBanner}>
+          <span className={styles.whyGoLabel}>WHY GO?</span>
+          Previous comparable gatherings in New York Harbor were OpSail 1964, 1976, 1986, 1992, 2000, and 2012.
+        </div>
       </div>
 
       <div className={styles.tabs}>
