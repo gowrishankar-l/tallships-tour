@@ -1,7 +1,10 @@
 'use client'
 
-import { useState, useMemo, useRef, useEffect } from 'react'
+import { useState, useMemo, useRef, useEffect, Suspense } from 'react'
+import dynamic from 'next/dynamic'
+const MapView = dynamic(() => import('./MapView'), { ssr: false })
 import { SHIPS, LOCATIONS, ALL_DATES, Ship } from '@/lib/ships'
+import EVENTS from '@/lib/sail4th_itinerary.json'
 import styles from './page.module.css'
 
 function Dropdown({ value, onChange, options, placeholder }: {
@@ -197,7 +200,7 @@ function LocationCard({ neighborhood, pier, ships }: { neighborhood: string; pie
 
 type SortKey = 'sqftSail' | 'lengthFt' | 'name' | 'country'
 type SortDir = 'asc' | 'desc'
-type View = 'ships' | 'locations' | 'bydate'
+type View = 'ships' | 'locations' | 'bydate' | 'schedule' | 'map'
 
 export default function Page() {
   const [view, setView] = useState<View>('ships')
@@ -278,7 +281,7 @@ export default function Page() {
           <div className={styles.credits}>
             <span className={styles.creditsName}>Gowrishankar Lakshminarayanan</span>
             <a href="https://sail4th.org" target="_blank" rel="noopener noreferrer" className={styles.creditsSource}>Data: sail4th.org</a>
-            <span className={styles.creditsSource}>Last updated Jun 30, 2026</span>
+            <span className={styles.creditsSource}>Last updated Jul 1, 2026</span>
           </div>
         </div>
       </header>
@@ -339,7 +342,9 @@ export default function Page() {
         <div className={styles.tabsInner}>
           <button className={`${styles.tab} ${view==='ships'?styles.tabOn:''}`} onClick={()=>setView('ships')}>🚢 All Ships</button>
           <button className={`${styles.tab} ${view==='locations'?styles.tabOn:''}`} onClick={()=>setView('locations')}>📍 By Location</button>
-          <button className={`${styles.tab} ${view==='bydate'?styles.tabOn:''}`} onClick={()=>setView('bydate')}>📅 By Date</button>
+          <button className={`${styles.tab} ${view==='bydate'?styles.tabOn:''}`} onClick={()=>setView('bydate')}>🗓 By Date</button>
+          <button className={`${styles.tab} ${view==='schedule'?styles.tabOn:''}`} onClick={()=>setView('schedule')}>🗓 Schedule</button>
+          <button className={`${styles.tab} ${view==='map'?styles.tabOn:''}`} onClick={()=>setView('map')}>🗺 Map</button>
         </div>
       </div>
 
@@ -373,13 +378,13 @@ export default function Page() {
                 <thead>
                   <tr>
                     <th className={styles.thRank}>#</th>
-                    <th className={`${styles.th} ${styles.thSort}`} onClick={()=>handleSort('name')}>Ship <SortIcon k="name" /></th>
-                    <th className={`${styles.th} ${styles.thSort} ${styles.thNum}`} onClick={()=>handleSort('sqftSail')}>Sail (sq ft) <SortIcon k="sqftSail" /></th>
-                    <th className={`${styles.th} ${styles.thSort} ${styles.thNum}`} onClick={()=>handleSort('lengthFt')}>Length <SortIcon k="lengthFt" /></th>
-                    <th className={`${styles.th} ${styles.thNum}`}>Capacity</th>
-                    <th className={styles.th}>Location</th>
-                    <th className={styles.th}>On Display</th>
-                    <th className={styles.th}></th>
+                    <th className={`${styles.th} ${styles.thSort} ${styles.thShip}`} onClick={()=>handleSort('name')}>Ship <SortIcon k="name" /></th>
+                    <th className={`${styles.th} ${styles.thSort} ${styles.thNum} ${styles.thSail}`} onClick={()=>handleSort('sqftSail')}>Sail (sq ft) <SortIcon k="sqftSail" /></th>
+                    <th className={`${styles.th} ${styles.thSort} ${styles.thNum} ${styles.thLength}`} onClick={()=>handleSort('lengthFt')}>Length <SortIcon k="lengthFt" /></th>
+                    <th className={`${styles.th} ${styles.thNum} ${styles.thCapacity}`}>Capacity</th>
+                    <th className={`${styles.th} ${styles.thLocation}`}>Location</th>
+                    <th className={`${styles.th} ${styles.thDisplay}`}>On Display</th>
+                    <th className={styles.thChevronCol}></th>
                   </tr>
                 </thead>
                 <tbody>
@@ -439,10 +444,57 @@ export default function Page() {
                     </div>
                     {pierShips.map(s => (
                       <div key={s.name} className={styles.dateShipRow}>
-                        <span className={styles.dateShipName}>{s.name}</span>
+                        <span className={styles.dateShipName}><Flag country={s.country} />{s.name}</span>
                         <span className={styles.dateShipCountry}>{s.country}</span>
                       </div>
                     ))}
+                  </div>
+                ))}
+              </div>
+            ))}
+          </div>
+        )}
+
+        {/* ── Map ── */}
+        {view === 'map' && (
+          <Suspense fallback={<div className={styles.mapLoading}>Loading map…</div>}>
+            <MapView key="map" ships={SHIPS} />
+          </Suspense>
+        )}
+
+        {/* ── Schedule ── */}
+        {view === 'schedule' && (
+          <div className={styles.scheduleList}>
+            {Object.entries(
+              EVENTS.reduce<Record<string, typeof EVENTS>>((acc, e) => {
+                const [year, month, day] = e.date.split('-').map(Number)
+                const d = new Date(year, month - 1, day).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })
+                if (!acc[d]) acc[d] = []
+                acc[d].push(e)
+                return acc
+              }, {})
+            ).map(([date, events]) => (
+              <div key={date} className={styles.scheduleDay}>
+                <div className={styles.scheduleDayHeader}>
+                  {date}
+                  {date.includes('July 4') && <span className={styles.paradeTag}>MAIN PARADE DAY</span>}
+                  {date.includes('July 8') && <span className={styles.notPublicTag}>Not open to public</span>}
+                </div>
+                {events.map((e, i) => (
+                  <div key={i} className={styles.scheduleCard}>
+                    <div className={styles.scheduleCardTop}>
+                      <div className={styles.scheduleEvent}>{e.event}</div>
+                      <div className={styles.scheduleMeta}>
+                        <span className={styles.scheduleTime}>{e.time}</span>
+                        {e.location && <span className={styles.scheduleLocation}>📍 {e.location}</span>}
+                      </div>
+                    </div>
+                    <p className={styles.scheduleDesc}>{e.description}</p>
+                    {e.photography_tip && (
+                      <div className={styles.schedulePhotoTip}>
+                        <span className={styles.schedulePhotoIcon}>📷</span> {e.photography_tip}
+                      </div>
+                    )}
                   </div>
                 ))}
               </div>

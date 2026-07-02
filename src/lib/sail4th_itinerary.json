@@ -1,0 +1,66 @@
+[
+  {
+    "date": "2026-07-03",
+    "time": "1:00 PM - 3:00 PM",
+    "location": "East River",
+    "event": "Parade of Sail: Class B Tall Ships",
+    "description": "Class B tall ships from around the world will sail down the East River from Hell Gate Bridge to Gravesend Bay, Brooklyn.",
+    "photography_tip": "Best shore positions are along the East River waterfront: Brooklyn Bridge Park, the Dumbo waterfront, and the East River Esplanade in Manhattan."
+  },
+  {
+    "date": "2026-07-04",
+    "time": "7:30 AM - 9:00 AM",
+    "location": "Hudson River",
+    "event": "International Aerial Review",
+    "description": "A massive formation of U.S. and international fixed and rotary wing aircraft will parade over the Verrazzano Bridge, above the Hudson River, flying in formations and over the International Parade of Sail. The Blue Angels will lead the review, and there will be a thrilling surprise not to be missed.",
+    "photography_tip": null
+  },
+  {
+    "date": "2026-07-04",
+    "time": "10:15 AM - 11:15 AM",
+    "location": "Hudson River",
+    "event": "International Naval Review",
+    "description": "40+ Navy Grey Hull Ships from around the world will dock along the Hudson River for a full International Naval Review showcasing maritime cooperation.",
+    "photography_tip": null
+  },
+  {
+    "date": "2026-07-04",
+    "time": "9:00 AM - 2:00 PM",
+    "location": "Hudson River",
+    "event": "Parade of Sail: Class A Tall Ships",
+    "description": "These are the flagship training vessels of their nations, some stretching over 300 feet of mast and sail. They enter New York Harbor from beneath the Verrazzano-Narrows Bridge, pass in presidential review before the Statue of Liberty, and sail north up the Hudson River to the George Washington Bridge. ",
+    "photography_tip": "Best shore positions are along Hudson River Park, Battery Park, and the Palisades in New Jersey."
+  },
+  {
+    "date": "2026-07-05",
+    "time": "12:00 PM - 6:00 PM",
+    "location": "All Major Docking Ports",
+    "event": "Public viewing of Tall Ships",
+    "description": "Board these beautiful tall ships with our free tours, taking place at Brooklyn Bridge Park, Sail City (The Intrepid & Manhattan Cruise Terminal), South Street Seaport, and Staten Island Waterfront Park.",
+    "photography_tip": null
+  },
+  {
+    "date": "2026-07-06",
+    "time": "12:00 PM - 6:00 PM",
+    "location": "All Major Docking Ports",
+    "event": "Public viewing of Tall Ships",
+    "description": "Board these beautiful tall ships with our free tours, taking place at Brooklyn Bridge Park, Sail City (The Intrepid & Manhattan Cruise Terminal), South Street Seaport, and Staten Island Waterfront Park.",
+    "photography_tip": null
+  },
+  {
+    "date": "2026-07-07",
+    "time": "12:00 PM - 6:00 PM",
+    "location": "All Major Docking Ports",
+    "event": "Public viewing of Tall Ships",
+    "description": "Board these beautiful tall ships with our free tours, taking place at Brooklyn Bridge Park, Sail City (The Intrepid & Manhattan Cruise Terminal), South Street Seaport, and Staten Island Waterfront Park.",
+    "photography_tip": null
+  },
+  {
+    "date": "2026-07-08",
+    "time": "09:00:00",
+    "location": null,
+    "event": "Five Sisters Cup Tall Ship Race",
+    "description": "A race to Boston for the \u201cFive Sisters Cup\u201d between four of the five sister ships that remain in service: USCG\u2019s barque Eagle (U.S.), Sagres (Portugal), Mircea (Romania), and Gorch Fock (Germany), which has held the Tiffany-made trophy since 1976.",
+    "photography_tip": null
+  }
+]
