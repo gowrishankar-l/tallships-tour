@@ -294,16 +294,11 @@ export default function Page() {
         <div className={styles.headerInner}>
           <div className={styles.brand}>
             <span className={styles.brandIcon}>⛵</span>
-            <div>
-              <h1 className={styles.title}>Tall Ships 2026</h1>
+            <div style={{ textAlign: 'center' }}>
+              <h1 className={styles.title}>Tall Ships 2026 NYC Parade</h1>
               <p className={styles.subtitle}>Fleet Directory &amp; Dock Guide — New York City</p>
-              <p className={styles.eventDates}>July 5 – July 7, 2026</p>
+              <p className={styles.eventDates}>July 4 – July 7, 2026</p>
             </div>
-          </div>
-          <div className={styles.credits}>
-            <span className={styles.creditsName}>Gowrishankar Lakshminarayanan</span>
-            <a href="https://sail4th.org" target="_blank" rel="noopener noreferrer" className={styles.creditsSource}>Data: sail4th.org</a>
-            <span className={styles.creditsSource}>Last updated Jul 2, 2026</span>
           </div>
         </div>
       </header>
@@ -358,9 +353,8 @@ export default function Page() {
             <span className={styles.statLabel}>Nations</span>
           </div>
         </div>
-        <div className={styles.whyGoBanner}>
-          <span className={styles.whyGoLabel}>WHY GO?</span>
-          Previous comparable gatherings in New York Harbor were OpSail 1964, 1976, 1986, 1992, 2000, and 2012.
+        <div className={styles.statsBannerCredits}>
+          Built by <strong>Gowrishankar Lakshminarayanan</strong> · Data: <a href="https://sail4th.org" target="_blank" rel="noopener noreferrer">sail4th.org</a> · Last updated Jul&nbsp;2,&nbsp;2026
         </div>
       </div>
 
@@ -392,6 +386,10 @@ export default function Page() {
         {/* ── All Ships ── */}
         {view === 'ships' && (
           <>
+            <div className={styles.whyGoBanner}>
+              <span className={styles.whyGoLabel}>WHY GO?</span>
+              Previous comparable gatherings in New York Harbor were OpSail 1964, 1976, 1986, 1992, 2000, and 2012.
+            </div>
             <div className={styles.filters}>
               <input className={styles.search} placeholder="🔍  Search ship or country…" value={search} onChange={e=>setSearch(e.target.value)} />
               <Dropdown
@@ -545,7 +543,7 @@ export default function Page() {
           <div className={styles.trackerBanner}>
             <div className={styles.trackerIcon}>🎟</div>
             <h2 className={styles.trackerTitle}>Public Viewing Tickets</h2>
-            <p className={styles.trackerDesc}>Free public viewing of tall ships at Brooklyn Bridge Park, Sail City (The Intrepid &amp; Manhattan Cruise Terminal), South Street Seaport, and Staten Island Waterfront Park — July 5–7, 2026, 12–6 PM.</p>
+            <p className={styles.trackerDesc}>Free public viewing of tall ships at Brooklyn Bridge Park, Sail City (The Intrepid &amp; Manhattan Cruise Terminal), South Street Seaport, and Staten Island Waterfront Park — July 4–7, 2026, 12–6 PM.</p>
             <a
               href="https://tickettree.us/events/sail-250"
               target="_blank"

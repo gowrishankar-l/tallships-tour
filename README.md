@@ -1,6 +1,6 @@
 # Tall Ships 2026 — Fleet Directory & Dock Guide
 
-A Next.js web app for browsing the Tall Ships America 2026 fleet visiting New York City (July 5–7, 2026).
+A Next.js web app for browsing the Tall Ships America 2026 fleet visiting New York City (July 4–7, 2026).
 
 Live: [tallships-tour.vercel.app](https://tallships-tour.vercel.app)
 
