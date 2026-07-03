@@ -2,6 +2,7 @@
 
 import { useState, useMemo, useRef, useEffect, Suspense } from 'react'
 import { MapPin, Ship as ShipIcon, CalendarDays, CalendarRange, Map, BarChart2, Satellite, Ticket } from 'lucide-react'
+import { Treemap, ResponsiveContainer } from 'recharts'
 
 function Pin() {
   return <MapPin size={12} color="#dc2626" fill="#dc2626" style={{ display: 'inline-block', verticalAlign: 'middle', marginRight: 3, flexShrink: 0 }} />
@@ -560,12 +561,18 @@ export default function Page() {
           const shipsWithSail = SHIPS.filter(s => s.sqftSail != null).sort((a, b) => (b.sqftSail ?? 0) - (a.sqftSail ?? 0))
           const maxSail = shipsWithSail[0]?.sqftSail ?? 1
 
-          const nationMap: Record<string, { count: number; country: string }> = {}
+          const nationMap: Record<string, { count: number; country: string; totalSail: number; sailCount: number }> = {}
           SHIPS.forEach(s => {
-            if (!nationMap[s.country]) nationMap[s.country] = { count: 0, country: s.country }
+            if (!nationMap[s.country]) nationMap[s.country] = { count: 0, country: s.country, totalSail: 0, sailCount: 0 }
             nationMap[s.country].count++
+            if (s.sqftSail != null) { nationMap[s.country].totalSail += s.sqftSail; nationMap[s.country].sailCount++ }
           })
-          const nations = Object.values(nationMap).sort((a, b) => b.count - a.count)
+          const nations = Object.values(nationMap).sort((a, b) => {
+            if (b.count !== a.count) return b.count - a.count
+            const avgA = a.sailCount ? a.totalSail / a.sailCount : 0
+            const avgB = b.sailCount ? b.totalSail / b.sailCount : 0
+            return avgB - avgA
+          })
           const maxCount = nations[0]?.count ?? 1
 
           return (
@@ -610,25 +617,52 @@ export default function Page() {
               {analyticsTab === 'nation' && (
                 <div className={styles.analyticsSection}>
                   <p className={styles.analyticsSub}>Number of ships per country</p>
-                  <div className={styles.barChart}>
-                    {nations.map(n => (
-                      <div key={n.country} className={styles.barRow}>
-                        <div className={styles.barLabel}>
-                          <Flag country={n.country} />
-                          <span className={styles.barShipName}>{n.country}</span>
-                        </div>
-                        <div className={styles.barTrack}>
-                          <div
-                            className={styles.barFillGreen}
-                            style={{ width: `${(n.count / maxCount) * 100}%` }}
-                          >
-                            <span className={styles.barInlineValue}>{n.count}</span>
-                          </div>
-                        </div>
-                        <div className={styles.barValue}>{n.count} ship{n.count !== 1 ? 's' : ''}</div>
-                      </div>
-                    ))}
-                  </div>
+                  <ResponsiveContainer width="100%" height={420}>
+                      <Treemap
+                        data={nations.map(n => ({ name: n.country, size: n.count, count: n.count }))}
+                        dataKey="size"
+                        aspectRatio={4 / 3}
+                        content={({ x, y, width, height, name, count }: any) => {
+                          const COLORS = ['#e63946','#f4a261','#2ec4b6','#3a86ff','#ff006e','#fb5607','#8338ec','#06d6a0','#ffbe0b','#118ab2','#ef233c','#80b918','#7209b7','#f72585','#4cc9f0']
+                          const COUNTRY_ISO_LOCAL: Record<string, string> = {
+                            'Argentina':'ar','British Virgin Islands':'vg','Chile':'cl','Colombia':'co',
+                            'Dominican Republic':'do','Ecuador':'ec','France':'fr','Germany':'de',
+                            'India':'in','Italy':'it','Monaco':'mc','Netherlands':'nl','Peru':'pe',
+                            'Poland':'pl','Portugal':'pt','Romania':'ro','Spain':'es','Sweden':'se',
+                            'United States':'us','Uruguay':'uy',
+                          }
+                          const toFlagEmoji = (iso: string) =>
+                            [...iso.toUpperCase()].map(c => String.fromCodePoint(0x1F1A5 + c.charCodeAt(0))).join('')
+                          const idx = nations.findIndex(n => n.country === name)
+                          const bg = COLORS[idx % COLORS.length]
+                          if (width < 24 || height < 18) return <g />
+                          const iso = COUNTRY_ISO_LOCAL[name as string]
+                          const flag = iso ? toFlagEmoji(iso) : ''
+                          const showCount = height > 52 && width > 48
+                          const charLimit = Math.floor(width / 8)
+                          const fullName = name as string
+                          const abbr = fullName.split(' ').map((w: string) => w[0]).join('')
+                          const label = fullName.length > charLimit ? abbr : fullName
+                          const showFlag = flag && width > 40
+                          const display = showFlag ? `${flag} ${label}` : label
+                          const cx = x + width / 2
+                          const midY = y + height / 2
+                          return (
+                            <g>
+                              <rect x={x} y={y} width={width} height={height} fill={bg} rx={4} stroke="#fff" strokeWidth={2} />
+                              <text x={cx} y={showCount ? midY - 8 : midY} textAnchor="middle" fill="#fff" fontSize={12} fontWeight={700} fontFamily="Barlow, sans-serif" dominantBaseline="middle">
+                                {display}
+                              </text>
+                              {showCount && (
+                                <text x={cx} y={midY + 10} textAnchor="middle" fill="rgba(255,255,255,0.85)" fontSize={10} fontFamily="Barlow, sans-serif" dominantBaseline="middle">
+                                  {count} ship{count !== 1 ? 's' : ''}
+                                </text>
+                              )}
+                            </g>
+                          )
+                        }}
+                      />
+                    </ResponsiveContainer>
                 </div>
               )}
 
