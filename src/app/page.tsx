@@ -693,6 +693,12 @@ export default function Page() {
 
         {/* ── Schedule ── */}
         {view === 'schedule' && (() => {
+          const parseTime = (t: string) => {
+            const start = t.split(' - ')[0].trim()
+            const [time, period] = start.split(' ')
+            const [h, m] = time.split(':').map(Number)
+            return (period === 'PM' && h !== 12 ? h + 12 : period === 'AM' && h === 12 ? 0 : h) * 60 + (m || 0)
+          }
           const grouped = Object.entries(
             EVENTS.reduce<Record<string, typeof EVENTS>>((acc, e) => {
               const [year, month, day] = e.date.split('-').map(Number)
@@ -701,7 +707,7 @@ export default function Page() {
               acc[d].push(e)
               return acc
             }, {})
-          )
+          ).map(([date, events]) => [date, [...events].sort((a, b) => parseTime(a.time) - parseTime(b.time))] as const)
           const toId = (date: string) => date.replace(/[^a-z0-9]/gi, '-').toLowerCase()
           return (
             <>
@@ -724,7 +730,23 @@ export default function Page() {
                 {grouped.map(([date, events]) => (
                   <div key={date} id={toId(date)} className={styles.scheduleDay}>
                     <div className={styles.scheduleDayHeader}>
-                      {date}
+                      <span>{date}</span>
+                      {(() => {
+                        const parseMin = (t: string) => {
+                          const [time, period] = t.trim().split(' ')
+                          const [h, m] = time.split(':').map(Number)
+                          return (period === 'PM' && h !== 12 ? h + 12 : period === 'AM' && h === 12 ? 0 : h) * 60 + (m || 0)
+                        }
+                        const starts = events.map(e => e.time.split(' - ')[0].trim())
+                        const ends = events.map(e => e.time.includes(' - ') ? e.time.split(' - ')[1].trim() : null).filter(Boolean) as string[]
+                        const earliest = starts.reduce((a, b) => parseMin(a) <= parseMin(b) ? a : b)
+                        const latest = ends.length ? ends.reduce((a, b) => parseMin(a) >= parseMin(b) ? a : b) : null
+                        return (
+                          <span className={styles.scheduleDayRange}>
+                            {latest ? `${earliest} – ${latest} ET` : `From ${earliest} ET`}
+                          </span>
+                        )
+                      })()}
                       {date.includes('July 4') && <span className={styles.paradeTag}>MAIN PARADE DAY</span>}
                       {date.includes('July 8') && <span className={styles.notPublicTag}>Not open to public</span>}
                     </div>

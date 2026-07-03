@@ -403,6 +403,11 @@
   font-size: 18px; font-weight: 800; color: var(--accent);
   text-transform: uppercase; letter-spacing: 0.06em;
   border-bottom: 2px solid var(--accent); padding-bottom: 6px; margin-bottom: 12px;
+  display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap;
+}
+.scheduleDayRange {
+  font-size: 13px; font-weight: 500; color: var(--muted);
+  text-transform: none; letter-spacing: 0;
 }
 .scheduleCard {
   background: #fff; border: 1px solid var(--border); border-radius: 8px;
