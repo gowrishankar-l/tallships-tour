@@ -374,7 +374,15 @@ export default function Page() {
             <button
               key={v}
               className={`${styles.tab} ${view===v?styles.tabOn:''}`}
-              onClick={e => { setView(v); (e.currentTarget as HTMLElement).scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' }) }}
+              onClick={e => {
+                setView(v)
+                const btn = e.currentTarget as HTMLElement
+                const rail = btn.parentElement as HTMLElement
+                const btnLeft = btn.offsetLeft
+                const btnWidth = btn.offsetWidth
+                const railWidth = rail.offsetWidth
+                rail.scrollTo({ left: btnLeft - railWidth / 2 + btnWidth / 2, behavior: 'smooth' })
+              }}
             >
               <span style={{verticalAlign:'middle',marginRight:5,display:'inline-flex'}}>{icon}</span>{label}
             </button>
