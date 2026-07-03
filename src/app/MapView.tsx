@@ -95,10 +95,10 @@ export default function MapView({ ships }: Props) {
             >
               {/* Hover tooltip — ship list with flags */}
               <Tooltip direction="top" offset={[0, -radius]} opacity={1} sticky className={styles.mapHoverTip}>
-                <div style={{ fontFamily: 'Barlow, sans-serif', minWidth: 180, maxWidth: 240 }}>
-                  <div style={{ fontWeight: 800, fontSize: 13, marginBottom: 6, borderBottom: `2px solid ${color}`, paddingBottom: 6, display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', gap: 12 }}>
-                    <span>{pierName} · {city}</span>
-                    <span style={{ fontSize: 11, fontWeight: 600, color: '#64748b', whiteSpace: 'nowrap' }}>{pierShips.length} ship{pierShips.length !== 1 ? 's' : ''}</span>
+                <div style={{ fontFamily: 'Barlow, sans-serif', width: 260 }}>
+                  <div style={{ marginBottom: 6, borderBottom: `2px solid ${color}`, paddingBottom: 6 }}>
+                    <div style={{ fontWeight: 800, fontSize: 13 }}>{pierName} · {city}</div>
+                    <div style={{ fontSize: 11, color: '#64748b', marginTop: 2 }}>{pierShips.length} ship{pierShips.length !== 1 ? 's' : ''}</div>
                   </div>
                   {pierShips.map(s => {
                     const iso = COUNTRY_ISO[s.country]

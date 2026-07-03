@@ -79,7 +79,7 @@
 
 /* ── Tabs ────────────────────────────────────────────────────────────────── */
 .tabs { background: #e8edf8; border-bottom: 2px solid var(--accent); padding-top: 0; }
-.tabsInner { max-width: 1100px; margin: 0 auto; padding: 0 20px; display: flex; gap: 4px; align-items: flex-end; overflow-x: auto; scrollbar-width: none; }
+.tabsInner { max-width: 1100px; margin: 0 auto; padding: 0 20px; display: flex; gap: 4px; align-items: flex-end; overflow-x: auto; overflow-y: hidden; scrollbar-width: none; }
 .tabsInner::-webkit-scrollbar { display: none; }
 .tab {
   padding: 10px 24px; font-size: 14px; font-weight: 600; line-height: 1;

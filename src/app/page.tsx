@@ -366,14 +366,24 @@ export default function Page() {
 
       <div className={styles.tabs}>
         <div className={styles.tabsInner}>
-          <button className={`${styles.tab} ${view==='ships'?styles.tabOn:''}`} onClick={()=>setView('ships')}><ShipIcon size={13} style={{verticalAlign:'middle',marginRight:5}}/>All Ships</button>
-          <button className={`${styles.tab} ${view==='locations'?styles.tabOn:''}`} onClick={()=>setView('locations')}><MapPin size={13} style={{verticalAlign:'middle',marginRight:5}}/>By Location</button>
-          <button className={`${styles.tab} ${view==='bydate'?styles.tabOn:''}`} onClick={()=>setView('bydate')}><CalendarDays size={13} style={{verticalAlign:'middle',marginRight:5}}/>By Date</button>
-          <button className={`${styles.tab} ${view==='schedule'?styles.tabOn:''}`} onClick={()=>setView('schedule')}><CalendarRange size={13} style={{verticalAlign:'middle',marginRight:5}}/>Schedule</button>
-          <button className={`${styles.tab} ${view==='map'?styles.tabOn:''}`} onClick={()=>setView('map')}><Map size={13} style={{verticalAlign:'middle',marginRight:5}}/>Map</button>
-          <button className={`${styles.tab} ${view==='analytics'?styles.tabOn:''}`} onClick={()=>setView('analytics')}><BarChart2 size={13} style={{verticalAlign:'middle',marginRight:5}}/>Analytics</button>
-          <button className={`${styles.tab} ${view==='tracker'?styles.tabOn:''}`} onClick={()=>setView('tracker')}><Satellite size={13} style={{verticalAlign:'middle',marginRight:5}}/>Live Tracker</button>
-          <button className={`${styles.tab} ${view==='tickets'?styles.tabOn:''}`} onClick={()=>setView('tickets')}><Ticket size={13} style={{verticalAlign:'middle',marginRight:5}}/>Tickets</button>
+          {([
+            ['ships', 'All Ships', <ShipIcon size={13} />],
+            ['locations', 'By Location', <MapPin size={13} />],
+            ['bydate', 'By Date', <CalendarDays size={13} />],
+            ['schedule', 'Schedule', <CalendarRange size={13} />],
+            ['map', 'Map', <Map size={13} />],
+            ['analytics', 'Analytics', <BarChart2 size={13} />],
+            ['tracker', 'Live Tracker', <Satellite size={13} />],
+            ['tickets', 'Tickets', <Ticket size={13} />],
+          ] as [View, string, React.ReactNode][]).map(([v, label, icon]) => (
+            <button
+              key={v}
+              className={`${styles.tab} ${view===v?styles.tabOn:''}`}
+              onClick={e => { setView(v); (e.currentTarget as HTMLElement).scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' }) }}
+            >
+              <span style={{verticalAlign:'middle',marginRight:5,display:'inline-flex'}}>{icon}</span>{label}
+            </button>
+          ))}
         </div>
       </div>
 
