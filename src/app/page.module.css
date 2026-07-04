@@ -44,11 +44,11 @@
 /* ── Stats Banner ────────────────────────────────────────────────────────── */
 .statsBanner { background: #f0f4ff; border-bottom: 1px solid var(--border); }
 .statsBannerInner {
-  max-width: 1100px; margin: 0 auto; padding: 16px 20px;
+  max-width: 1100px; margin: 0 auto; padding: 14px 20px 6px;
   display: flex; gap: 0;
 }
 .statsBannerCredits {
-  max-width: 1100px; margin: 0 auto; padding: 0 20px 12px;
+  max-width: 1100px; margin: 0 auto; padding: 0 20px 10px;
   font-size: 11px; color: var(--muted); text-align: center;
 }
 .statsBannerCredits a { color: var(--muted); text-decoration: underline; }
@@ -64,20 +64,21 @@
 }
 .statItem {
   flex: 1; display: flex; flex-direction: column; align-items: center;
-  padding: 12px 0; position: relative;
+  padding: 8px 0; position: relative;
 }
 .statItem + .statItem::before {
   content: ''; position: absolute; left: 0; top: 20%; bottom: 20%;
   width: 1px; background: var(--border);
 }
 .statIcon {
-  width: 28px; height: 28px; color: var(--accent); margin-bottom: 6px; opacity: 0.75;
+  width: 22px; height: 22px; color: var(--accent); margin-bottom: 4px; opacity: 0.75;
 }
 .statNum {
   font-family: 'Barlow Condensed', sans-serif;
   font-size: 36px; font-weight: 800; color: var(--accent); line-height: 1;
 }
 .statLabel {
+  display: block;
   font-size: 11px; font-weight: 700; text-transform: uppercase;
   letter-spacing: 0.08em; color: var(--muted); margin-top: 4px;
 }
