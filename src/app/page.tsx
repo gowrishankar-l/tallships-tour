@@ -453,6 +453,7 @@ export default function Page() {
                 {' '}ships selected
               </span>
             </div>
+            <p style={{ fontSize: 11, color: 'var(--muted)', marginBottom: 8 }}>Ships ranked by sail area (sq. ft)</p>
             <div className={styles.tableWrap}>
               <table className={styles.table}>
                 <thead>
