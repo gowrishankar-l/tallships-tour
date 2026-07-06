@@ -108,6 +108,40 @@ function DateChip({ date }: { date: string }) {
   return <span className={styles.dateChip}>{date}</span>
 }
 
+function ShipCard({ ship, rank }: { ship: Ship; rank: number }) {
+  const [expanded, setExpanded] = useState(false)
+  const area = ship.location ? locationArea(ship.location) : null
+  const color = area ? AREA_COLORS[area] : null
+  return (
+    <div className={styles.shipCard} onClick={() => setExpanded(e => !e)}>
+      <div className={styles.shipCardTop}>
+        <span className={styles.shipCardRank}>{rank}</span>
+        <div className={styles.shipCardMain}>
+          <div className={styles.shipCardName}><Flag country={ship.country} />{ship.name}</div>
+          <div className={styles.shipCardCountry}>{ship.country}</div>
+        </div>
+        <span className={styles.shipCardChevron}>{expanded ? '▲' : '▼'}</span>
+      </div>
+      <div className={styles.shipCardStats}>
+        {ship.sqftSail != null && <span><span className={styles.shipCardStatLabel}>Sail</span> {fmtNum(ship.sqftSail)} sq ft</span>}
+        {ship.lengthFt != null && <span><span className={styles.shipCardStatLabel}>Length</span> {fmtNum(ship.lengthFt)} ft</span>}
+        {ship.pier ? <span><Pin />{ship.pier}</span> : <span className={styles.tbd}>Dock TBD</span>}
+      </div>
+      {expanded && (
+        <div className={styles.shipCardExpand}>
+          {ship.neighborhood && <div><span className={styles.elabel}>City</span><span className={styles.eval} style={{ color: color ?? '#64748b', fontWeight: 600 }}>{ship.neighborhood}</span></div>}
+          {ship.capacity != null && <div><span className={styles.elabel}>Capacity</span><span className={styles.eval}>{ship.capacity}</span></div>}
+          <div><span className={styles.elabel}>On Display</span>
+            <div className={styles.dateChips} style={{ marginTop: 4 }}>
+              {ship.dates.length > 0 ? ship.dates.map(d => <DateChip key={d} date={d} />) : <span className={styles.tbd}>TBD</span>}
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  )
+}
+
 function ShipRow({ ship, rank }: { ship: Ship; rank: number }) {
   const [expanded, setExpanded] = useState(false)
   const area = ship.location ? locationArea(ship.location) : null
@@ -438,6 +472,9 @@ export default function Page() {
                 </tbody>
               </table>
             </div>
+            <div className={styles.shipCardList}>
+              {filtered.map((ship, i) => <ShipCard key={ship.name} ship={ship} rank={i+1} />)}
+            </div>
           </>
         )}
 
@@ -478,6 +515,17 @@ export default function Page() {
         {/* ── By Date ── */}
         {view === 'bydate' && (
           <>
+          <div className={styles.scheduleNav}>
+            {ALL_DATES.map(date => (
+              <button
+                key={date}
+                className={styles.scheduleNavItem}
+                onClick={() => document.getElementById(`date-${date.replace(/[^a-z0-9]/gi,'-').toLowerCase()}`)?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
+              >
+                {date}
+              </button>
+            ))}
+          </div>
           <div className={styles.filters} style={{ marginBottom: 20 }}>
             <Dropdown
               value={filterNeighborhood}
@@ -490,7 +538,7 @@ export default function Page() {
             {byDate.map(([date, ships]) => {
               const filteredShips = filterNeighborhood ? ships.filter(s => s.neighborhood === filterNeighborhood) : ships
               if (filteredShips.length === 0) return null
-              return (<div key={date} className={styles.dateCard}>
+              return (<div key={date} id={`date-${date.replace(/[^a-z0-9]/gi,'-').toLowerCase()}`} className={styles.dateCard}>
                 <div className={styles.dateCardHeader}>
                   <span className={styles.dateCardDate}>{date}</span>
                   <span className={styles.dateCardCount}>{filteredShips.length} ships</span>

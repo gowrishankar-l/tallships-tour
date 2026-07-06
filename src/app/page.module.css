@@ -261,6 +261,32 @@
   .search { width: 100%; }
   .filters { flex-direction: column; align-items: stretch; }
   .resultCount { margin-left: 0; }
+  .tableWrap { display: none; }
+}
+
+/* ── Ship Cards (mobile) ─────────────────────────────────────────────────── */
+@media (min-width: 641px) { .shipCardList { display: none; } }
+.shipCardList { display: flex; flex-direction: column; gap: 8px; }
+.shipCard {
+  background: #fff; border: 1px solid var(--border); border-radius: 8px;
+  overflow: hidden; cursor: pointer;
+}
+.shipCardTop {
+  display: flex; align-items: center; gap: 10px; padding: 12px 14px;
+}
+.shipCardRank { color: var(--dim); font-size: 12px; font-weight: 600; min-width: 20px; text-align: center; flex-shrink: 0; }
+.shipCardMain { flex: 1; min-width: 0; }
+.shipCardName { font-weight: 600; font-size: 14px; color: var(--text); display: flex; align-items: center; gap: 4px; }
+.shipCardCountry { font-size: 11px; color: var(--muted); margin-top: 2px; }
+.shipCardChevron { color: var(--dim); font-size: 10px; flex-shrink: 0; }
+.shipCardStats {
+  display: flex; gap: 12px; flex-wrap: wrap;
+  padding: 6px 14px 10px; font-size: 12px; color: var(--text); border-top: 1px solid var(--border);
+}
+.shipCardStatLabel { font-size: 10px; font-weight: 700; text-transform: uppercase; color: var(--muted); margin-right: 3px; }
+.shipCardExpand {
+  padding: 12px 14px; border-top: 1px solid var(--border);
+  background: #f8faff; display: flex; flex-direction: column; gap: 8px;
 }
 
 /* ── Flags ───────────────────────────────────────────────────────────────── */
