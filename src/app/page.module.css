@@ -265,8 +265,8 @@
 }
 
 /* ── Ship Cards (mobile) ─────────────────────────────────────────────────── */
-@media (min-width: 641px) { .shipCardList { display: none; } }
 .shipCardList { display: flex; flex-direction: column; gap: 8px; }
+@media (min-width: 641px) { .shipCardList { display: none; } }
 .shipCard {
   background: #fff; border: 1px solid var(--border); border-radius: 8px;
   overflow: hidden; cursor: pointer;
